@@ -143,6 +143,18 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
 .mcard .mval.empty { color: var(--text-faint); font-weight: 400; }
 .mcard.current { border-color: var(--gold); }
 
+.today-card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 22px 20px; margin-bottom: 14px; text-align: center; position: relative; overflow: hidden; }
+.today-card.pos { border-color: rgba(52,201,142,0.35); background: radial-gradient(120% 140% at 50% 0%, rgba(52,201,142,0.12) 0%, var(--card) 60%); }
+.today-card.neg { border-color: rgba(232,97,92,0.35); background: radial-gradient(120% 140% at 50% 0%, rgba(232,97,92,0.12) 0%, var(--card) 60%); }
+.today-label { font-size: 12px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+.today-value { font-family: 'IBM Plex Mono', monospace; font-size: 42px; font-weight: 700; letter-spacing: -0.02em; line-height: 1; }
+.today-value.pos { color: var(--green); } .today-value.neg { color: var(--red); }
+.today-value.empty { color: var(--text-faint); font-size: 22px; font-weight: 500; }
+.today-sub { font-size: 12px; color: var(--text-dim); margin-top: 10px; }
+.today-sub.hit { color: var(--green); } .today-sub.miss { color: var(--text-faint); }
+.today-cta { margin-top: 16px; background: var(--gold); color: #241a06; border: none; padding: 11px 22px; border-radius: 11px; font-weight: 700; font-size: 13.5px; cursor: pointer; }
+.today-cta:active { transform: scale(0.97); }
+
 .dash-link { display: flex; align-items: center; justify-content: space-between; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 15px 17px; margin-bottom: 14px; cursor: pointer; color: var(--text); font-size: 13.5px; font-weight: 500; }
 .dash-link:hover { background: var(--card-hover); }
 .dash-link svg { width: 16px; height: 16px; color: var(--text-faint); }
@@ -477,9 +489,9 @@ function capitalCardHTML(currentCapital, allTimeTotal, roi, kpi){
   `;
 }
 
-function computeMonthGoal(kpi, currentCapital){
+function computeMonthGoal(kpi, currentCapital, y, m){
   const capitalStartOfMonth = currentCapital - kpi.total;
-  const weekdaysCount = weekdaysInMonthCount(viewYear, viewMonth);
+  const weekdaysCount = weekdaysInMonthCount(y ?? viewYear, m ?? viewMonth);
   const goal = capitalStartOfMonth > 0 ? capitalStartOfMonth * (Math.pow(1 + forecastTargetPct/100, weekdaysCount) - 1) : 0;
   const pct = goal !== 0 ? (kpi.total/goal)*100 : 0;
   return { goal, pct: Math.max(0, Math.min(100, pct)), pctRaw: pct, crushed: kpi.total >= goal && goal > 0, capitalStartOfMonth };
@@ -535,6 +547,57 @@ async function render(){
   if (currentPage === 'settings') return renderSettingsPage();
 }
 
+async function computeTodayInfo(){
+  const y = today.getFullYear(), m = today.getMonth(), d = today.getDate();
+  const data = await loadMonth(y, m);
+  const kpi = computeKPIs(data);
+  const allTimeTotal = await getAllTimeTotal();
+  const currentCapital = startingCapital + allTimeTotal;
+  const goalInfo = computeMonthGoal(kpi, currentCapital, y, m);
+  const dim = daysInMonth(y, m);
+  let remainingDays = 0;
+  for (let dd = d; dd <= dim; dd++) if (!isWeekendDay(y, m, dd)) remainingDays++;
+  const targetFinalCapital = goalInfo.capitalStartOfMonth + goalInfo.goal;
+  let dailyRate = 0;
+  if (remainingDays > 0 && currentCapital > 0 && targetFinalCapital > currentCapital) {
+    dailyRate = Math.pow(targetFinalCapital / currentCapital, 1/remainingDays) - 1;
+  }
+  const isWknd = isWeekendDay(y, m, d);
+  const todayTarget = (!isWknd && dailyRate > 0) ? currentCapital * dailyRate : 0;
+  return { entry: data[d], todayTarget, isWknd };
+}
+
+function todayCardHTML(info){
+  const now = new Date();
+  const dateLabel = now.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
+  if (info.entry) {
+    const val = info.entry.pnl;
+    const cls = val >= 0 ? 'pos' : 'neg';
+    let sub = '';
+    if (info.todayTarget > 0) {
+      const hit = val >= info.todayTarget;
+      sub = `<div class="today-sub ${hit?'hit':'miss'}">${hit?'✓ Objectif du jour atteint':'Objectif du jour'} (~${fmtEURplain(info.todayTarget)})</div>`;
+    }
+    return `<div class="today-card ${cls}">
+      <div class="today-label">Aujourd'hui · ${dateLabel}</div>
+      <div class="today-value ${cls}">${fmtEUR(val)}</div>
+      ${sub}
+    </div>`;
+  }
+  if (info.isWknd) {
+    return `<div class="today-card">
+      <div class="today-label">Aujourd'hui · ${dateLabel}</div>
+      <div class="today-value empty">Marché fermé</div>
+    </div>`;
+  }
+  return `<div class="today-card">
+    <div class="today-label">Aujourd'hui · ${dateLabel}</div>
+    <div class="today-value empty">Pas encore de résultat</div>
+    ${info.todayTarget > 0 ? `<div class="today-sub">Objectif du jour : ~${fmtEURplain(info.todayTarget)}</div>` : ''}
+    <button class="today-cta" onclick="quickAddToday()">Ajouter le résultat</button>
+  </div>`;
+}
+
 async function renderDashboard(){
   const kpi = computeKPIs(monthData);
   const allTimeTotal = await getAllTimeTotal();
@@ -542,11 +605,13 @@ async function renderDashboard(){
   const roi = startingCapital > 0 ? (allTimeTotal / startingCapital) * 100 : 0;
   const goalInfo = computeMonthGoal(kpi, currentCapital);
   const dd = await computeAllTimeDrawdown();
+  const todayInfo = await computeTodayInfo();
 
   document.getElementById('app').innerHTML = `
     ${headerHTML()}
     ${drawdownBannerHTML(dd)}
     ${backupBannerHTML()}
+    ${todayCardHTML(todayInfo)}
     ${capitalCardHTML(currentCapital, allTimeTotal, roi, kpi)}
     ${goalCardHTML(kpi, goalInfo)}
     <div class="section-label">Indicateurs clés</div>
@@ -999,4 +1064,5 @@ async function disablePin(){
 })();
 </script>
 </body>
+</html>
 </html>
