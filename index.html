@@ -31,25 +31,30 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
   --text-faint: #4d5158;
 }
 * { box-sizing: border-box; }
-.app {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Inter', -apple-system, sans-serif;
-  max-width: 480px;
-  margin: 0 auto;
-  padding: 26px 18px 100px;
-  min-height: 100vh;
-}
+.app { background: var(--bg); color: var(--text); font-family: 'Inter', -apple-system, sans-serif; max-width: 480px; margin: 0 auto; padding: 26px 18px 100px; min-height: 100vh; }
 .fab { position: fixed; bottom: max(22px, env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; display: flex; justify-content: flex-end; padding: 0 18px; pointer-events: none; z-index: 20; box-sizing: border-box; }
 .fab button { pointer-events: auto; background: var(--gold); color: #241a06; border: none; width: 52px; height: 52px; border-radius: 50%; font-size: 26px; cursor: pointer; box-shadow: 0 6px 20px rgba(217,169,79,0.35); display: flex; align-items: center; justify-content: center; line-height: 1; }
 .fab button:active { transform: scale(0.92); }
-.brand { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 18px; }
-.brand h1 { font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 600; margin: 0; letter-spacing: -0.01em; }
+
+.brand { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; gap: 10px; }
+.brand-left { display: flex; align-items: center; gap: 10px; }
+.brand h1 { font-family: 'Space Grotesk', sans-serif; font-size: 19px; font-weight: 600; margin: 0; letter-spacing: -0.01em; }
 .brand-right { display: flex; align-items: center; gap: 8px; }
 .brand .ticker { font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: var(--gold); background: var(--gold-dim); padding: 3px 8px; border-radius: 5px; letter-spacing: 0.04em; }
-.icon-btn { background: var(--card); border: 1px solid var(--line); color: var(--text-dim); width: 30px; height: 30px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-.icon-btn svg { width: 15px; height: 15px; }
-.icon-btn:hover { color: var(--gold); border-color: var(--gold); }
+.icon-btn, .menu-btn { background: var(--card); border: 1px solid var(--line); color: var(--text-dim); width: 34px; height: 34px; border-radius: 9px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.icon-btn svg, .menu-btn svg { width: 16px; height: 16px; }
+.icon-btn:hover, .menu-btn:hover { color: var(--gold); border-color: var(--gold); }
+
+.drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.55); display: none; z-index: 40; }
+.drawer-overlay.show { display: block; }
+.drawer { position: fixed; top: 0; left: 0; bottom: 0; width: 76%; max-width: 280px; background: var(--card); border-right: 1px solid var(--line); transform: translateX(-105%); transition: transform 0.28s cubic-bezier(.4,0,.2,1); z-index: 41; padding: 28px 14px; padding-top: calc(28px + env(safe-area-inset-top)); display: flex; flex-direction: column; gap: 3px; }
+.drawer.show { transform: translateX(0); }
+.drawer-title { font-family: 'Space Grotesk', sans-serif; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-faint); margin: 4px 0 14px 10px; }
+.drawer-item { display: flex; align-items: center; gap: 12px; padding: 13px 12px; border-radius: 10px; color: var(--text-dim); cursor: pointer; font-size: 14.5px; font-weight: 500; }
+.drawer-item svg { width: 18px; height: 18px; flex-shrink: 0; }
+.drawer-item.active { background: var(--gold-dim); color: var(--gold); }
+.drawer-item:hover:not(.active) { background: var(--card-hover); }
+.drawer-footer { margin-top: auto; padding: 10px 12px; font-size: 10.5px; color: var(--text-faint); }
 
 .view-toggle { display: flex; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 3px; margin-bottom: 16px; }
 .view-toggle button { flex: 1; background: transparent; border: none; color: var(--text-dim); padding: 8px; border-radius: 7px; font-size: 13px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; }
@@ -94,7 +99,7 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
 .grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-bottom: 16px; }
 .cell { aspect-ratio: 1; border-radius: 12px; border: 1px solid var(--line); background: var(--card); display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding: 0 2px 6px; cursor: pointer; font-family: 'IBM Plex Mono', monospace; position: relative; overflow: hidden; transition: border-color 0.15s; }
 .cell:active { transform: scale(0.94); }
-.cell:hover { border-color: var(--border-strong, rgba(255,255,255,0.15)); }
+.cell:hover { border-color: rgba(255,255,255,0.15); }
 .cell.out { visibility: hidden; }
 .cell .d { position: absolute; top: 4px; left: 6px; font-size: 9px; font-weight: 500; color: var(--text-faint); font-family: 'Inter', sans-serif; z-index: 2; opacity: 0.55; }
 .cell.filled .d { color: rgba(255,255,255,0.45); }
@@ -107,6 +112,7 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
 .note-dot { position: absolute; bottom: 4px; right: 5px; width: 4px; height: 4px; border-radius: 50%; background: var(--gold); z-index: 3; }
 
 .kpi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 14px; }
+.kpi-grid.compact { grid-template-columns: repeat(3, 1fr); }
 .kpi { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px 13px; }
 .kpi-top { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; }
 .kpi-top svg { width: 14px; height: 14px; color: var(--text-faint); flex-shrink: 0; }
@@ -117,8 +123,6 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
 
 .forecast-card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px 17px; margin-bottom: 14px; }
 .forecast-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-.forecast-edit { background: none; border: none; color: var(--text-faint); cursor: pointer; font-size: 12.5px; }
-.forecast-edit:hover { color: var(--gold); }
 .forecast-pills { display: flex; gap: 6px; margin-bottom: 12px; }
 .forecast-pills button { flex: 1; background: rgba(255,255,255,0.04); border: 1px solid var(--line); color: var(--text-dim); padding: 6px; border-radius: 7px; font-size: 12px; cursor: pointer; font-family: 'Inter', sans-serif; }
 .forecast-pills button.active { background: var(--gold-dim); color: var(--gold); border-color: var(--gold); }
@@ -138,6 +142,24 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
 .mcard .mval { font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 600; }
 .mcard .mval.empty { color: var(--text-faint); font-weight: 400; }
 .mcard.current { border-color: var(--gold); }
+
+.dash-link { display: flex; align-items: center; justify-content: space-between; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 15px 17px; margin-bottom: 14px; cursor: pointer; color: var(--text); font-size: 13.5px; font-weight: 500; }
+.dash-link:hover { background: var(--card-hover); }
+.dash-link svg { width: 16px; height: 16px; color: var(--text-faint); }
+.backup-banner { background: var(--red-dim); border: 1px solid rgba(232,97,92,0.35); border-radius: 14px; padding: 13px 15px; margin-bottom: 14px; cursor: pointer; }
+.backup-banner .bb-title { font-size: 13px; font-weight: 600; color: #ff9d98; }
+.backup-banner .bb-sub { font-size: 11.5px; color: var(--text-dim); margin-top: 3px; }
+.dd-banner { background: rgba(232,97,92,0.16); border: 1px solid rgba(232,97,92,0.4); border-radius: 14px; padding: 13px 15px; margin-bottom: 14px; cursor: pointer; }
+.dd-banner .bb-title { font-size: 13px; font-weight: 700; color: #ff9d98; }
+.dd-banner .bb-sub { font-size: 11.5px; color: var(--text-dim); margin-top: 3px; }
+
+.settings-card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 15px 17px; margin-bottom: 12px; }
+.settings-row { display: flex; justify-content: space-between; align-items: center; }
+.settings-label { font-size: 13px; color: var(--text); font-weight: 500; }
+.settings-sub2 { font-size: 11px; color: var(--text-faint); margin-top: 2px; }
+.settings-val { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--gold); }
+.settings-btn { background: var(--gold-dim); color: var(--gold); border: none; padding: 8px 14px; border-radius: 8px; font-size: 12.5px; font-weight: 600; cursor: pointer; }
+.export-btn { width: 100%; background: var(--gold); color: #241a06; border: none; padding: 13px; border-radius: 11px; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
 
 .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 10; padding: 20px; }
 .overlay.show { display: flex; }
@@ -161,6 +183,9 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
 </style>
 </head>
 <body>
+
+<div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer"></div>
 
 <div class="app" id="app">
   <div class="loading" id="loading">Chargement du journal…</div>
@@ -212,7 +237,12 @@ const ICONS = {
   trendDown: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7l6 6 4-4 8 9"/><path d="M15 18h6v-6"/></svg>',
   waves: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 15c2-3 4-3 6 0s4 3 6 0 4-3 6 0"/></svg>',
   flame: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3s4 3.5 4 7.5a4 4 0 0 1-8 0c0-1 .3-1.8.8-2.6C9.3 9.5 9 11 9 12a3 3 0 0 0 6 0c0-3.5-3-6-3-9z"/><path d="M7 15a5 5 0 0 0 10 0c0-1.5-.5-2.8-1.3-4"/></svg>',
-  download: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3v13m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>'
+  download: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3v13m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>',
+  menu: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>',
+  grid: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>',
+  calendar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>',
+  chart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>',
+  gear: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>'
 };
 
 function lsGet(key){ try { return localStorage.getItem(key); } catch(e) { return null; } }
@@ -227,11 +257,43 @@ let today = new Date();
 let viewYear = today.getFullYear();
 let viewMonth = today.getMonth();
 let viewMode = 'month';
+let currentPage = 'dashboard';
 let startingCapital = 300;
 let forecastTargetPct = 2;
 let forecastHorizonDays = 126;
 let monthData = {};
 let sign = 'gain';
+
+const PAGES = [
+  { id: 'dashboard', label: 'Dashboard', icon: 'grid' },
+  { id: 'journal', label: 'Journal', icon: 'calendar' },
+  { id: 'stats', label: 'Statistiques', icon: 'chart' },
+  { id: 'settings', label: 'Réglages', icon: 'gear' }
+];
+const PAGE_TITLES = { dashboard: 'Journal de trading', journal: 'Journal', stats: 'Statistiques', settings: 'Réglages' };
+
+function renderDrawer(){
+  document.getElementById('drawer').innerHTML = `
+    <div class="drawer-title">Navigation</div>
+    ${PAGES.map(p => `<div class="drawer-item ${currentPage===p.id?'active':''}" onclick="setPage('${p.id}')">${ICONS[p.icon]}<span>${p.label}</span></div>`).join('')}
+    <div class="drawer-footer">XAUUSD · Compte cent</div>
+  `;
+}
+function openDrawer(){ document.getElementById('drawer').classList.add('show'); document.getElementById('drawerOverlay').classList.add('show'); }
+function closeDrawer(){ document.getElementById('drawer').classList.remove('show'); document.getElementById('drawerOverlay').classList.remove('show'); }
+function setPage(p){ currentPage = p; closeDrawer(); render(); }
+
+function headerHTML(){
+  return `
+    <div class="brand">
+      <div class="brand-left">
+        <button class="menu-btn" onclick="openDrawer()" aria-label="Menu">${ICONS.menu}</button>
+        <h1>${PAGE_TITLES[currentPage]}</h1>
+      </div>
+      <div class="brand-right"><span class="ticker">XAUUSD</span></div>
+    </div>
+  `;
+}
 
 function monthKey(y,m){ return 'month:'+y+'-'+(m+1); }
 
@@ -245,17 +307,24 @@ function migrateData(obj){
   return out;
 }
 
+let lastExportAt = null;
+let firstUseAt = null;
+let drawdownThresholdPct = 15;
+
 async function loadSettings(){
   const v = lsGet('settings');
   if (v) {
     const s = JSON.parse(v);
     startingCapital = s.startingCapital ?? 300;
     forecastTargetPct = s.forecastTargetPct ?? 2;
+    lastExportAt = s.lastExportAt ?? null;
+    firstUseAt = s.firstUseAt ?? null;
+    drawdownThresholdPct = s.drawdownThresholdPct ?? 15;
     return true;
   }
   return false;
 }
-async function saveSettings(){ lsSet('settings', JSON.stringify({startingCapital, forecastTargetPct})); }
+async function saveSettings(){ lsSet('settings', JSON.stringify({startingCapital, forecastTargetPct, lastExportAt, firstUseAt, drawdownThresholdPct})); }
 async function loadMonth(y, m){
   const v = lsGet(monthKey(y, m));
   return v ? migrateData(JSON.parse(v)) : {};
@@ -293,6 +362,43 @@ function fmtEUR(n){
   return (n > 0 ? '+' : n < 0 ? '-' : '') + s + ' €';
 }
 function fmtEURplain(n){ return n.toLocaleString('fr-FR', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' €'; }
+function daysSinceBackup(){
+  const ref = lastExportAt || firstUseAt || Date.now();
+  return Math.floor((Date.now() - ref) / 86400000);
+}
+function backupBannerHTML(){
+  const days = daysSinceBackup();
+  if (days < 30) return '';
+  const label = lastExportAt ? `Pas de sauvegarde depuis ${days} jours` : `Aucune sauvegarde depuis l'installation (${days} jours)`;
+  return `<div class="backup-banner" onclick="exportCSV()">
+    <div><div class="bb-title">⚠ ${label}</div><div class="bb-sub">Tape pour exporter tes données en CSV</div></div>
+  </div>`;
+}
+
+async function computeAllTimeDrawdown(){
+  const keys = lsListPrefix('month:');
+  const parsed = keys.map(k => {
+    const [y, m] = k.replace('month:','').split('-').map(Number);
+    return { key: k, y, m: m - 1 };
+  }).sort((a,b) => a.y - b.y || a.m - b.m);
+  let cum = startingCapital, peak = startingCapital;
+  for (const { key } of parsed) {
+    const v = lsGet(key);
+    if (!v) continue;
+    const data = migrateData(JSON.parse(v));
+    const days = Object.keys(data).map(Number).sort((a,b) => a - b);
+    for (const d of days) { cum += data[d].pnl; if (cum > peak) peak = cum; }
+  }
+  const ddPct = peak > 0 ? ((peak - cum) / peak) * 100 : 0;
+  return { currentCapital: cum, peak, ddPct };
+}
+
+function drawdownBannerHTML(dd){
+  if (dd.ddPct < drawdownThresholdPct) return '';
+  return `<div class="dd-banner" onclick="setPage('settings')">
+    <div><div class="bb-title dd">📉 Drawdown de ${dd.ddPct.toFixed(1)}% depuis ton pic</div><div class="bb-sub">Pic : ${fmtEURplain(dd.peak)} · Actuel : ${fmtEURplain(dd.currentCapital)} · seuil réglé à ${drawdownThresholdPct}%</div></div>
+  </div>`;
+}
 function daysInMonth(y,m){ return new Date(y, m+1, 0).getDate(); }
 function firstWeekdayMon(y,m){ const d = new Date(y,m,1).getDay(); return d === 0 ? 6 : d - 1; }
 function isWeekendDay(y,m,d){ const wd = new Date(y,m,d).getDay(); return wd === 0 || wd === 6; }
@@ -342,17 +448,102 @@ function renderCurve(curve){
   </svg>`;
 }
 
+function capitalCardHTML(currentCapital, allTimeTotal, roi, kpi){
+  return `
+    <div class="capital-card fade-in">
+      <button class="edit-cap" onclick="editCapital()">Modifier</button>
+      <div class="cap-label">Capital actuel</div>
+      <div class="cap-value">${fmtEURplain(currentCapital)}</div>
+      <div class="cap-sub"><span class="${allTimeTotal>=0?'pos':'neg'}">${fmtEUR(allTimeTotal)}</span> · ${roi>=0?'+':''}${roi.toFixed(2)}% depuis le départ (${fmtEURplain(startingCapital)})</div>
+      <div class="cap-curve-title">Courbe de capital — ${MONTHS_FR[viewMonth]} <span style="color:${kpi.total>=0?'var(--green)':'var(--red)'}">${fmtEUR(kpi.total)}</span></div>
+      ${renderCurve(kpi.curve)}
+    </div>
+  `;
+}
+
+function computeMonthGoal(kpi, currentCapital){
+  const capitalStartOfMonth = currentCapital - kpi.total;
+  const weekdaysCount = weekdaysInMonthCount(viewYear, viewMonth);
+  const goal = capitalStartOfMonth > 0 ? capitalStartOfMonth * (Math.pow(1 + forecastTargetPct/100, weekdaysCount) - 1) : 0;
+  const pct = goal !== 0 ? (kpi.total/goal)*100 : 0;
+  return { goal, pct: Math.max(0, Math.min(100, pct)), pctRaw: pct, crushed: kpi.total >= goal && goal > 0, capitalStartOfMonth };
+}
+
+function goalCardHTML(kpi, goalInfo){
+  return `
+    <div class="goal-card">
+      <div class="goal-top">
+        <div>
+          <div class="goal-label">Objectif mensuel</div>
+          <div class="goal-rate">${forecastTargetPct}%/jour composé</div>
+        </div>
+        <button class="goal-edit" onclick="editForecastTarget()">Modifier</button>
+      </div>
+      <div class="goal-track"><div class="goal-fill ${kpi.total<0?'neg':''}" style="width:${goalInfo.pct}%"></div></div>
+      <div class="goal-nums">
+        <span class="cur ${kpi.total>=0?'pos':'neg'}">${fmtEUR(kpi.total)}</span>
+        <span class="target">sur ${fmtEURplain(goalInfo.goal)}</span>
+      </div>
+      ${goalInfo.crushed ? `<div class="goal-banner">Objectif atteint — ${Math.round(goalInfo.pctRaw)}% de ta cible</div>` : ''}
+    </div>
+  `;
+}
+
+function kpiGridHTML(kpi, compact){
+  const pfDisplay = kpi.profitFactor === null ? '∞' : kpi.profitFactor.toFixed(2);
+  const streakLabel = kpi.streak > 0 ? `${kpi.streak} jour${kpi.streak>1?'s':''} ${kpi.streakSign>0?'gagnants':'perdants'}` : 'aucune donnée';
+  if (compact) {
+    return `
+    <div class="kpi-grid compact">
+      <div class="kpi"><div class="kpi-top">${ICONS.scale}<span class="kpi-label">Profit factor</span></div><div class="kpi-val ${kpi.profitFactor!==null && kpi.profitFactor>=1?'pos':(kpi.profitFactor!==null?'neg':'')}">${kpi.vals.length?pfDisplay:'—'}</div></div>
+      <div class="kpi"><div class="kpi-top">${ICONS.target}<span class="kpi-label">Espérance</span></div><div class="kpi-val ${kpi.expectancy>=0?'pos':'neg'}">${kpi.vals.length?fmtEUR(kpi.expectancy):'—'}</div></div>
+      <div class="kpi"><div class="kpi-top">${ICONS.waves}<span class="kpi-label">Drawdown</span></div><div class="kpi-val ${kpi.maxDD>0?'neg':''}">${kpi.maxDD>0?'-'+fmtEURplain(kpi.maxDD):'—'}</div></div>
+    </div>`;
+  }
+  return `
+    <div class="kpi-grid">
+      <div class="kpi"><div class="kpi-top">${ICONS.scale}<span class="kpi-label">Profit factor</span></div><div class="kpi-val ${kpi.profitFactor!==null && kpi.profitFactor>=1?'pos':(kpi.profitFactor!==null?'neg':'')}">${kpi.vals.length?pfDisplay:'—'}</div><div class="kpi-sub">gains / pertes</div></div>
+      <div class="kpi"><div class="kpi-top">${ICONS.target}<span class="kpi-label">Espérance / trade</span></div><div class="kpi-val ${kpi.expectancy>=0?'pos':'neg'}">${kpi.vals.length?fmtEUR(kpi.expectancy):'—'}</div><div class="kpi-sub">gain moyen attendu</div></div>
+      <div class="kpi"><div class="kpi-top">${ICONS.trendUp}<span class="kpi-label">Gain moyen</span></div><div class="kpi-val pos">${kpi.avgWin?fmtEURplain(kpi.avgWin):'—'}</div><div class="kpi-sub">jours gagnants</div></div>
+      <div class="kpi"><div class="kpi-top">${ICONS.trendDown}<span class="kpi-label">Perte moyenne</span></div><div class="kpi-val neg">${kpi.avgLoss?fmtEURplain(kpi.avgLoss):'—'}</div><div class="kpi-sub">jours perdants</div></div>
+      <div class="kpi"><div class="kpi-top">${ICONS.waves}<span class="kpi-label">Drawdown max</span></div><div class="kpi-val ${kpi.maxDD>0?'neg':''}">${kpi.maxDD>0?'-'+fmtEURplain(kpi.maxDD):'—'}</div><div class="kpi-sub">pire creux vs pic</div></div>
+      <div class="kpi"><div class="kpi-top">${ICONS.flame}<span class="kpi-label">Série actuelle</span></div><div class="kpi-val ${kpi.streakSign>0?'pos':(kpi.streakSign<0?'neg':'')}">${kpi.streak||'—'}</div><div class="kpi-sub">${streakLabel}</div></div>
+    </div>`;
+}
+
 async function render(){
-  if (viewMode === 'year') { await renderYear(); return; }
-  await renderMonth();
+  renderDrawer();
+  if (currentPage === 'dashboard') return renderDashboard();
+  if (currentPage === 'journal') return viewMode === 'year' ? renderYear() : renderMonth();
+  if (currentPage === 'stats') return renderStats();
+  if (currentPage === 'settings') return renderSettingsPage();
+}
+
+async function renderDashboard(){
+  const kpi = computeKPIs(monthData);
+  const allTimeTotal = await getAllTimeTotal();
+  const currentCapital = startingCapital + allTimeTotal;
+  const roi = startingCapital > 0 ? (allTimeTotal / startingCapital) * 100 : 0;
+  const goalInfo = computeMonthGoal(kpi, currentCapital);
+  const dd = await computeAllTimeDrawdown();
+
+  document.getElementById('app').innerHTML = `
+    ${headerHTML()}
+    ${drawdownBannerHTML(dd)}
+    ${backupBannerHTML()}
+    ${capitalCardHTML(currentCapital, allTimeTotal, roi, kpi)}
+    ${goalCardHTML(kpi, goalInfo)}
+    <div class="section-label">Indicateurs clés</div>
+    ${kpiGridHTML(kpi, true)}
+    <div class="dash-link" onclick="setPage('journal')"><span>Voir le calendrier du mois</span>${ICONS.calendar}</div>
+    <div class="dash-link" onclick="setPage('stats')"><span>Statistiques détaillées & prévisionnel</span>${ICONS.chart}</div>
+  `;
 }
 
 function compoundCurve(capital0, pct, days, sampleCount){
   const pts = [];
   const step = Math.max(1, Math.round(days/sampleCount));
-  for (let d = 0; d <= days; d += step) {
-    pts.push(capital0 * Math.pow(1 + pct/100, d));
-  }
+  for (let d = 0; d <= days; d += step) pts.push(capital0 * Math.pow(1 + pct/100, d));
   if (pts.length && (days % step !== 0)) pts.push(capital0 * Math.pow(1 + pct/100, days));
   return pts;
 }
@@ -388,9 +579,7 @@ async function renderForecastCard(currentCapital){
   return `
     <div class="section-label">Prévisionnel</div>
     <div class="forecast-card">
-      <div class="forecast-head">
-        <span class="goal-label">Objectif : ${forecastTargetPct}%/jour composé</span>
-      </div>
+      <div class="forecast-head"><span class="goal-label">Objectif : ${forecastTargetPct}%/jour composé</span></div>
       <div class="forecast-pills">
         <button class="${forecastHorizonDays===21?'active':''}" onclick="setForecastHorizon(21)">1 mois</button>
         <button class="${forecastHorizonDays===63?'active':''}" onclick="setForecastHorizon(63)">3 mois</button>
@@ -419,25 +608,77 @@ function editForecastTarget(){
   document.getElementById('settingsOverlay').classList.add('show');
   setTimeout(()=>document.getElementById('settingsInput').focus(), 50);
 }
+function editDrawdownThreshold(){
+  settingsField = 'drawdownThreshold';
+  document.getElementById('settingsTitle').textContent = "Seuil d'alerte drawdown";
+  document.getElementById('settingsSub').textContent = 'Alerte si tu descends de ce % depuis ton pic de capital';
+  document.getElementById('settingsInput').value = drawdownThresholdPct.toString().replace('.', ',');
+  document.getElementById('settingsOverlay').classList.add('show');
+  setTimeout(()=>document.getElementById('settingsInput').focus(), 50);
+}
+
+async function renderStats(){
+  const kpi = computeKPIs(monthData);
+  const allTimeTotal = await getAllTimeTotal();
+  const currentCapital = startingCapital + allTimeTotal;
+  document.getElementById('app').innerHTML = `
+    ${headerHTML()}
+    <div class="section-label">Indicateurs de performance — ${MONTHS_FR[viewMonth]}</div>
+    ${kpiGridHTML(kpi, false)}
+    ${await renderForecastCard(currentCapital)}
+  `;
+}
+
+async function renderSettingsPage(){
+  const dd = await computeAllTimeDrawdown();
+  document.getElementById('app').innerHTML = `
+    ${headerHTML()}
+    <div class="settings-card">
+      <div class="settings-row">
+        <div>
+          <div class="settings-label">Capital de départ</div>
+          <div class="settings-sub2">Ton capital initial sur le compte</div>
+        </div>
+        <button class="settings-btn" onclick="editCapital()">${fmtEURplain(startingCapital)}</button>
+      </div>
+    </div>
+    <div class="settings-card">
+      <div class="settings-row">
+        <div>
+          <div class="settings-label">Objectif quotidien</div>
+          <div class="settings-sub2">Rendement cible par jour, composé</div>
+        </div>
+        <button class="settings-btn" onclick="editForecastTarget()">${forecastTargetPct}%</button>
+      </div>
+    </div>
+    <div class="settings-card">
+      <div class="settings-row">
+        <div>
+          <div class="settings-label">Seuil d'alerte drawdown</div>
+          <div class="settings-sub2">Alerte si tu descends de ce % depuis ton pic · actuellement ${dd.ddPct.toFixed(1)}%</div>
+        </div>
+        <button class="settings-btn" onclick="editDrawdownThreshold()">${drawdownThresholdPct}%</button>
+      </div>
+    </div>
+    <div class="section-label" style="margin-top:18px">Données</div>
+    <button class="export-btn" onclick="exportCSV()">${ICONS.download} Exporter tout en CSV</button>
+    <div style="font-size:11.5px;color:${daysSinceBackup()>=30?'#ff9d98':'var(--text-faint)'};margin-top:10px">${lastExportAt ? `Dernière sauvegarde : il y a ${daysSinceBackup()} jour${daysSinceBackup()>1?'s':''}` : `Aucune sauvegarde exportée pour l'instant`}</div>
+    <div style="font-size:11.5px;color:var(--text-faint);margin-top:8px;line-height:1.5">Tes données sont stockées uniquement sur cet appareil, dans ce navigateur. L'export CSV te permet d'en garder une copie de sauvegarde.</div>
+  `;
+}
 
 async function renderMonth(){
   const kpi = computeKPIs(monthData);
   const allTimeTotal = await getAllTimeTotal();
   const currentCapital = startingCapital + allTimeTotal;
-  const roi = startingCapital > 0 ? (allTimeTotal / startingCapital) * 100 : 0;
+  const goalInfo = computeMonthGoal(kpi, currentCapital);
+  const goal = goalInfo.goal;
 
   const dim = daysInMonth(viewYear, viewMonth);
   const startOffset = firstWeekdayMon(viewYear, viewMonth);
   const isCurrentMonth = viewYear === today.getFullYear() && viewMonth === today.getMonth();
   const maxAbsMonth = Math.max(1, ...kpi.vals.map(v=>Math.abs(v)), 1);
-  const capitalStartOfMonth = currentCapital - kpi.total;
-  const weekdaysCount = weekdaysInMonthCount(viewYear, viewMonth);
-  const goal = capitalStartOfMonth > 0 ? capitalStartOfMonth * (Math.pow(1 + forecastTargetPct/100, weekdaysCount) - 1) : 0;
-
-  const pct = goal !== 0 ? (kpi.total/goal)*100 : 0;
-  const pctClamped = Math.max(0, Math.min(100, pct));
-  const crushed = kpi.total >= goal && goal > 0;
-  const targetFinalCapital = capitalStartOfMonth + goal;
+  const targetFinalCapital = goalInfo.capitalStartOfMonth + goal;
   let remainingDays = 0;
   if (isCurrentMonth) {
     for (let d = today.getDate(); d <= dim; d++) if (!isWeekendDay(viewYear, viewMonth, d)) remainingDays++;
@@ -485,69 +726,21 @@ async function renderMonth(){
     </div>`;
   }
 
-  const pfDisplay = kpi.profitFactor === null ? '∞' : kpi.profitFactor.toFixed(2);
-  const streakLabel = kpi.streak > 0 ? `${kpi.streak} jour${kpi.streak>1?'s':''} ${kpi.streakSign>0?'gagnants':'perdants'}` : 'aucune donnée';
-
   document.getElementById('app').innerHTML = `
-    <div class="brand">
-      <h1>Journal de trading</h1>
-      <div class="brand-right">
-        <button class="icon-btn" onclick="exportCSV()" aria-label="Exporter">${ICONS.download}</button>
-        <span class="ticker">XAUUSD</span>
-      </div>
-    </div>
-
-    <div class="capital-card fade-in">
-      <button class="edit-cap" onclick="editCapital()">Modifier</button>
-      <div class="cap-label">Capital actuel</div>
-      <div class="cap-value">${fmtEURplain(currentCapital)}</div>
-      <div class="cap-sub"><span class="${allTimeTotal>=0?'pos':'neg'}">${fmtEUR(allTimeTotal)}</span> · ${roi>=0?'+':''}${roi.toFixed(2)}% depuis le départ (${fmtEURplain(startingCapital)})</div>
-      <div class="cap-curve-title">Courbe de capital — ${MONTHS_FR[viewMonth]} <span style="color:${kpi.total>=0?'var(--green)':'var(--red)'}">${fmtEUR(kpi.total)}</span></div>
-      ${renderCurve(kpi.curve)}
-    </div>
-
+    ${headerHTML()}
     <div class="view-toggle">
       <button class="active" onclick="setViewMode('month')">Mois</button>
       <button onclick="setViewMode('year')">Année</button>
     </div>
-
     <div class="nav">
       <button onclick="changeMonth(-1)">‹</button>
       <span class="month-label">${MONTHS_FR[viewMonth]} ${viewYear}</span>
       <button onclick="changeMonth(1)">›</button>
     </div>
-
-    <div class="goal-card">
-      <div class="goal-top">
-        <div>
-          <div class="goal-label">Objectif mensuel</div>
-          <div class="goal-rate">${forecastTargetPct}%/jour composé</div>
-        </div>
-        <button class="goal-edit" onclick="editForecastTarget()">Modifier</button>
-      </div>
-      <div class="goal-track"><div class="goal-fill ${kpi.total<0?'neg':''}" style="width:${pctClamped}%"></div></div>
-      <div class="goal-nums">
-        <span class="cur ${kpi.total>=0?'pos':'neg'}">${fmtEUR(kpi.total)}</span>
-        <span class="target">sur ${fmtEURplain(goal)}</span>
-      </div>
-      ${crushed ? `<div class="goal-banner">Objectif atteint — ${Math.round(pct)}% de ta cible</div>` : ''}
-    </div>
-
+    ${goalCardHTML(kpi, goalInfo)}
     <div class="weekdays">${DAYS_FR.map(d=>`<span>${d}</span>`).join('')}</div>
     <div class="grid">${cells}</div>
     ${(isCurrentMonth && dailyRate > 0) ? `<div style="font-size:11px;color:var(--text-faint);margin:-8px 0 16px;text-align:center">En or : objectif quotidien composé (${(dailyRate*100).toFixed(2)}%/jour) pour atteindre ton but</div>` : ''}
-
-    <div class="section-label">Indicateurs de performance</div>
-    <div class="kpi-grid">
-      <div class="kpi"><div class="kpi-top">${ICONS.scale}<span class="kpi-label">Profit factor</span></div><div class="kpi-val ${kpi.profitFactor!==null && kpi.profitFactor>=1?'pos':(kpi.profitFactor!==null?'neg':'')}">${kpi.vals.length?pfDisplay:'—'}</div><div class="kpi-sub">gains / pertes</div></div>
-      <div class="kpi"><div class="kpi-top">${ICONS.target}<span class="kpi-label">Espérance / trade</span></div><div class="kpi-val ${kpi.expectancy>=0?'pos':'neg'}">${kpi.vals.length?fmtEUR(kpi.expectancy):'—'}</div><div class="kpi-sub">gain moyen attendu</div></div>
-      <div class="kpi"><div class="kpi-top">${ICONS.trendUp}<span class="kpi-label">Gain moyen</span></div><div class="kpi-val pos">${kpi.avgWin?fmtEURplain(kpi.avgWin):'—'}</div><div class="kpi-sub">jours gagnants</div></div>
-      <div class="kpi"><div class="kpi-top">${ICONS.trendDown}<span class="kpi-label">Perte moyenne</span></div><div class="kpi-val neg">${kpi.avgLoss?fmtEURplain(kpi.avgLoss):'—'}</div><div class="kpi-sub">jours perdants</div></div>
-      <div class="kpi"><div class="kpi-top">${ICONS.waves}<span class="kpi-label">Drawdown max</span></div><div class="kpi-val ${kpi.maxDD>0?'neg':''}">${kpi.maxDD>0?'-'+fmtEURplain(kpi.maxDD):'—'}</div><div class="kpi-sub">pire creux vs pic</div></div>
-      <div class="kpi"><div class="kpi-top">${ICONS.flame}<span class="kpi-label">Série actuelle</span></div><div class="kpi-val ${kpi.streakSign>0?'pos':(kpi.streakSign<0?'neg':'')}">${kpi.streak||'—'}</div><div class="kpi-sub">${streakLabel}</div></div>
-    </div>
-
-    ${await renderForecastCard(currentCapital)}
   `;
 }
 
@@ -560,11 +753,6 @@ async function renderYear(){
   const winRate = allEntries.length ? Math.round((wins/allEntries.length)*100) : 0;
   const monthsWithData = months.filter(m=>m.count>0);
   const bestMonth = monthsWithData.length ? monthsWithData.reduce((a,b)=>b.total>a.total?b:a) : null;
-  const worstMonth = monthsWithData.length ? monthsWithData.reduce((a,b)=>b.total<a.total?b:a) : null;
-
-  const allTimeTotal = await getAllTimeTotal();
-  const currentCapital = startingCapital + allTimeTotal;
-  const roi = startingCapital > 0 ? (allTimeTotal / startingCapital) * 100 : 0;
 
   const monthCards = months.map(m => {
     const isCurrent = viewYear === today.getFullYear() && m.idx === today.getMonth();
@@ -575,38 +763,21 @@ async function renderYear(){
   }).join('');
 
   document.getElementById('app').innerHTML = `
-    <div class="brand">
-      <h1>Journal de trading</h1>
-      <div class="brand-right">
-        <button class="icon-btn" onclick="exportCSV()" aria-label="Exporter">${ICONS.download}</button>
-        <span class="ticker">XAUUSD</span>
-      </div>
-    </div>
-
-    <div class="capital-card">
-      <button class="edit-cap" onclick="editCapital()">Modifier</button>
-      <div class="cap-label">Capital actuel</div>
-      <div class="cap-value">${fmtEURplain(currentCapital)}</div>
-      <div class="cap-sub"><span class="${allTimeTotal>=0?'pos':'neg'}">${fmtEUR(allTimeTotal)}</span> · ${roi>=0?'+':''}${roi.toFixed(2)}% depuis le départ (${fmtEURplain(startingCapital)})</div>
-    </div>
-
+    ${headerHTML()}
     <div class="view-toggle">
       <button onclick="setViewMode('month')">Mois</button>
       <button class="active" onclick="setViewMode('year')">Année</button>
     </div>
-
     <div class="nav">
       <button onclick="changeYear(-1)">‹</button>
       <span class="month-label">${viewYear}</span>
       <button onclick="changeYear(1)">›</button>
     </div>
-
     <div class="year-stats">
       <div class="kpi"><div class="kpi-label">P&L annuel</div><div class="kpi-val ${total>=0?'pos':'neg'}" style="margin-top:6px">${fmtEUR(total)}</div></div>
       <div class="kpi"><div class="kpi-label">Taux de réussite</div><div class="kpi-val" style="margin-top:6px">${winRate}%</div></div>
       <div class="kpi"><div class="kpi-label">Meilleur mois</div><div class="kpi-val pos" style="margin-top:6px">${bestMonth?fmtEUR(bestMonth.total):'—'}</div></div>
     </div>
-
     <div class="section-label">Détail par mois</div>
     <div class="year-months">${monthCards}</div>
   `;
@@ -639,6 +810,7 @@ document.getElementById('settingsSave').onclick = async ()=>{
   if (isNaN(n) || n < 0) return;
   if (settingsField === 'capital') startingCapital = n;
   if (settingsField === 'forecastTarget') forecastTargetPct = n;
+  if (settingsField === 'drawdownThreshold') drawdownThresholdPct = n;
   await saveSettings();
   document.getElementById('settingsOverlay').classList.remove('show');
   render();
@@ -647,9 +819,12 @@ document.getElementById('settingsSave').onclick = async ()=>{
 let activeDay = null;
 async function quickAddToday(){
   const y = today.getFullYear(), m = today.getMonth(), d = today.getDate();
-  if (viewYear !== y || viewMonth !== m || viewMode !== 'month') {
-    viewYear = y; viewMonth = m; viewMode = 'month';
+  currentPage = 'journal'; viewMode = 'month';
+  if (viewYear !== y || viewMonth !== m) {
+    viewYear = y; viewMonth = m;
     monthData = await loadMonth(viewYear, viewMonth);
+    await render();
+  } else {
     await render();
   }
   openDay(d);
@@ -678,10 +853,7 @@ document.getElementById('btnSave').onclick = async ()=>{
   const n = parseFloat(raw);
   if (isNaN(n) || n < 0) return;
   const note = document.getElementById('noteInput').value.trim();
-  monthData[activeDay] = {
-    pnl: Math.round((sign === 'perte' ? -n : n) * 100) / 100,
-    note
-  };
+  monthData[activeDay] = { pnl: Math.round((sign === 'perte' ? -n : n) * 100) / 100, note };
   await saveMonth();
   document.getElementById('overlay').classList.remove('show');
   render();
@@ -720,13 +892,17 @@ async function exportCSV(){
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
+  lastExportAt = Date.now();
+  await saveSettings();
+  render();
 }
 
 function isCurrentMonthJuly2026(){ return viewYear === 2026 && viewMonth === 6; }
 
 (async function init(){
   const hadSettings = await loadSettings();
-  if (!hadSettings) { startingCapital = 300; forecastTargetPct = 2; await saveSettings(); }
+  if (!hadSettings) { startingCapital = 300; forecastTargetPct = 2; firstUseAt = Date.now(); await saveSettings(); }
+  else if (!firstUseAt) { firstUseAt = Date.now(); await saveSettings(); }
   monthData = await loadMonth(viewYear, viewMonth);
   if (isCurrentMonthJuly2026() && Object.keys(monthData).length === 0) {
     monthData = { "2": {pnl: 4.92, note: ''}, "3": {pnl: -7.61, note: ''} };
