@@ -13,246 +13,164 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
-  html, body { background: #0a0c0f; margin: 0; padding: 0; }
-  body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); }
-</style>
-<style>
-  :root {
-    --bg: #0a0c0f;
-    --card: #14171c;
-    --card-hover: #1a1e24;
-    --line: rgba(255,255,255,0.07);
-    --gold: #d9a94f;
-    --gold-dim: rgba(217,169,79,0.14);
-    --green: #34c98e;
-    --green-dim: rgba(52,201,142,0.13);
-    --red: #e8615c;
-    --red-dim: rgba(232,97,92,0.13);
-    --text: #eef0f2;
-    --text-dim: #8a8f98;
-    --text-faint: #4d5158;
-  }
-  * { box-sizing: border-box; }
-  body { margin: 0; }
-  .app {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Inter', -apple-system, sans-serif;
-    max-width: 480px;
-    margin: 0 auto;
-    padding: 26px 18px 44px;
-    min-height: 100vh;
-  }
-  .brand {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    margin-bottom: 18px;
-  }
-  .brand h1 {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 20px;
-    font-weight: 600;
-    margin: 0;
-    letter-spacing: -0.01em;
-  }
-  .brand .ticker {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10.5px;
-    color: var(--gold);
-    background: var(--gold-dim);
-    padding: 3px 8px;
-    border-radius: 5px;
-    letter-spacing: 0.04em;
-  }
-  .section-label {
-    font-size: 11px;
-    color: var(--text-faint);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin: 0 0 9px 2px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .capital-card {
-    background: radial-gradient(120% 140% at 0% 0%, #201a0c 0%, #14171c 55%);
-    border: 1px solid rgba(217,169,79,0.28);
-    border-radius: 16px;
-    padding: 18px 20px;
-    margin-bottom: 14px;
-    position: relative;
-  }
-  .capital-card .edit-cap {
-    position: absolute;
-    top: 14px; right: 16px;
-    background: none;
-    border: none;
-    color: var(--text-faint);
-    cursor: pointer;
-    font-size: 11.5px;
-  }
-  .capital-card .edit-cap:hover { color: var(--gold); }
-  .cap-label {
-    font-size: 11px;
-    color: var(--gold);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: 6px;
-  }
-  .cap-value {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 29px;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-  }
-  .cap-sub {
-    font-size: 12px;
-    color: var(--text-dim);
-    margin-top: 4px;
-    font-family: 'IBM Plex Mono', monospace;
-  }
-  .cap-sub .pos { color: var(--green); }
-  .cap-sub .neg { color: var(--red); }
+html, body { background: #0a0c0f; margin: 0; padding: 0; }
+body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); }
+:root {
+  --bg: #0a0c0f;
+  --card: #14171c;
+  --card-hover: #1a1e24;
+  --line: rgba(255,255,255,0.07);
+  --gold: #d9a94f;
+  --gold-dim: rgba(217,169,79,0.14);
+  --green: #34c98e;
+  --green-dim: rgba(52,201,142,0.13);
+  --red: #e8615c;
+  --red-dim: rgba(232,97,92,0.13);
+  --text: #eef0f2;
+  --text-dim: #8a8f98;
+  --text-faint: #4d5158;
+}
+* { box-sizing: border-box; }
+.app {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', -apple-system, sans-serif;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 26px 18px 100px;
+  min-height: 100vh;
+}
+.fab { position: fixed; bottom: max(22px, env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; display: flex; justify-content: flex-end; padding: 0 18px; pointer-events: none; z-index: 20; box-sizing: border-box; }
+.fab button { pointer-events: auto; background: var(--gold); color: #241a06; border: none; width: 52px; height: 52px; border-radius: 50%; font-size: 26px; cursor: pointer; box-shadow: 0 6px 20px rgba(217,169,79,0.35); display: flex; align-items: center; justify-content: center; line-height: 1; }
+.fab button:active { transform: scale(0.92); }
+.brand { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 18px; }
+.brand h1 { font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 600; margin: 0; letter-spacing: -0.01em; }
+.brand-right { display: flex; align-items: center; gap: 8px; }
+.brand .ticker { font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: var(--gold); background: var(--gold-dim); padding: 3px 8px; border-radius: 5px; letter-spacing: 0.04em; }
+.icon-btn { background: var(--card); border: 1px solid var(--line); color: var(--text-dim); width: 30px; height: 30px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.icon-btn svg { width: 15px; height: 15px; }
+.icon-btn:hover { color: var(--gold); border-color: var(--gold); }
 
-  .curve-card {
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    padding: 16px 16px 10px;
-    margin-bottom: 14px;
-  }
-  .curve-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    margin-bottom: 8px;
-  }
-  .curve-title { font-size: 12px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.06em; }
-  .curve-now { font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 600; }
-  .curve-empty { text-align: center; padding: 24px 0; color: var(--text-faint); font-size: 12.5px; }
+.view-toggle { display: flex; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 3px; margin-bottom: 16px; }
+.view-toggle button { flex: 1; background: transparent; border: none; color: var(--text-dim); padding: 8px; border-radius: 7px; font-size: 13px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; }
+.view-toggle button.active { background: var(--card-hover); color: var(--text); }
 
-  .nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: 18px 0 14px;
-  }
-  .nav button {
-    background: var(--card);
-    border: 1px solid var(--line);
-    color: var(--text);
-    width: 32px; height: 32px;
-    border-radius: 9px;
-    cursor: pointer;
-    font-size: 15px;
-    display: flex; align-items: center; justify-content: center;
-    transition: background 0.15s;
-  }
-  .nav button:hover { background: var(--card-hover); }
-  .nav .month-label {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 15.5px;
-    font-weight: 600;
-    text-transform: capitalize;
-  }
-  .goal-card {
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    padding: 15px 17px;
-    margin-bottom: 14px;
-  }
-  .goal-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 9px; }
-  .goal-label { font-size: 11.5px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.06em; }
-  .goal-edit { background: none; border: none; color: var(--text-faint); cursor: pointer; font-size: 12.5px; padding: 2px 6px; }
-  .goal-edit:hover { color: var(--gold); }
-  .goal-track { height: 7px; border-radius: 5px; background: rgba(255,255,255,0.06); overflow: hidden; margin-bottom: 9px; }
-  .goal-fill { height: 100%; border-radius: 5px; background: linear-gradient(90deg, #b9862f, var(--gold)); transition: width 0.4s ease; }
-  .goal-fill.neg { background: linear-gradient(90deg, #8a2f2c, var(--red)); }
-  .goal-nums { display: flex; align-items: baseline; justify-content: space-between; font-family: 'IBM Plex Mono', monospace; }
-  .goal-nums .cur { font-size: 18px; font-weight: 600; }
-  .goal-nums .cur.pos { color: var(--green); }
-  .goal-nums .cur.neg { color: var(--red); }
-  .goal-nums .target { font-size: 11.5px; color: var(--text-faint); }
-  .goal-banner { margin-top: 11px; background: var(--gold-dim); border-radius: 9px; padding: 8px 11px; font-size: 12px; color: var(--gold); }
+.section-label { font-size: 11px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 9px 2px; display: flex; align-items: center; justify-content: space-between; }
+.capital-card { background: radial-gradient(120% 140% at 0% 0%, #201a0c 0%, #14171c 55%); border: 1px solid rgba(217,169,79,0.28); border-radius: 16px; padding: 18px 20px 6px; margin-bottom: 14px; position: relative; overflow: hidden; }
+.capital-card .edit-cap { position: absolute; top: 14px; right: 16px; background: none; border: none; color: var(--text-faint); cursor: pointer; font-size: 11.5px; z-index: 2; }
+.capital-card .edit-cap:hover { color: var(--gold); }
+.cap-label { font-size: 11px; color: var(--gold); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+.cap-value { font-family: 'IBM Plex Mono', monospace; font-size: 30px; font-weight: 600; letter-spacing: -0.01em; }
+.cap-sub { font-size: 12px; color: var(--text-dim); margin-top: 4px; font-family: 'IBM Plex Mono', monospace; margin-bottom: 14px; }
+.cap-sub .pos { color: var(--green); } .cap-sub .neg { color: var(--red); }
+.cap-curve-title { font-size: 10.5px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 2px; }
+.curve-empty { text-align: center; padding: 18px 0 8px; color: var(--text-faint); font-size: 12px; }
+.curve-draw { stroke-dasharray: 900; stroke-dashoffset: 900; animation: drawline 1.1s cubic-bezier(.4,0,.2,1) forwards; }
+@keyframes drawline { to { stroke-dashoffset: 0; } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+.fade-in { animation: fadeUp 0.45s ease both; }
 
-  .weekdays { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-bottom: 6px; }
-  .weekdays span { text-align: center; font-size: 10.5px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.03em; }
-  .grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-bottom: 16px; }
-  .cell {
-    aspect-ratio: 1;
-    border-radius: 10px;
-    border: 1px solid transparent;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    gap: 1px;
-    cursor: pointer;
-    font-family: 'IBM Plex Mono', monospace;
-    transition: transform 0.1s, border-color 0.15s;
-    position: relative;
-    overflow: hidden;
-  }
-  .cell:active { transform: scale(0.94); }
-  .cell.out { visibility: hidden; }
-  .cell .d { font-size: 11px; color: var(--text-faint); font-family: 'Inter', sans-serif; }
-  .cell.filled .d { color: rgba(255,255,255,0.5); }
-  .cell .p { font-size: 9.5px; font-weight: 600; line-height: 1.1; text-align: center; padding: 0 2px; }
-  .cell.empty { background: var(--card); border-color: var(--line); }
-  .cell.empty:hover { background: var(--card-hover); }
-  .cell.today { border-color: var(--gold); }
-  .badge {
-    position: absolute; top: 2px; right: 3px;
-    width: 12px; height: 12px;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .badge svg { width: 100%; height: 100%; }
+.nav { display: flex; align-items: center; justify-content: space-between; margin: 18px 0 14px; }
+.nav button { background: var(--card); border: 1px solid var(--line); color: var(--text); width: 32px; height: 32px; border-radius: 9px; cursor: pointer; font-size: 15px; display: flex; align-items: center; justify-content: center; }
+.nav .month-label { font-family: 'Space Grotesk', sans-serif; font-size: 15.5px; font-weight: 600; text-transform: capitalize; }
 
-  .kpi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 14px; }
-  .kpi {
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    padding: 12px 13px;
-  }
-  .kpi-top { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; }
-  .kpi-top svg { width: 14px; height: 14px; color: var(--text-faint); flex-shrink: 0; }
-  .kpi-label { font-size: 10.5px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.04em; }
-  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 16px; font-weight: 600; }
-  .kpi-val.pos { color: var(--green); }
-  .kpi-val.neg { color: var(--red); }
-  .kpi-sub { font-size: 10.5px; color: var(--text-faint); margin-top: 2px; }
+.goal-card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 15px 17px; margin-bottom: 14px; }
+.goal-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 9px; }
+.goal-label { font-size: 11.5px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.06em; }
+.goal-rate { font-size: 11px; color: var(--gold); margin-top: 2px; font-family: 'IBM Plex Mono', monospace; }
+.goal-edit { background: none; border: none; color: var(--text-faint); cursor: pointer; font-size: 12.5px; padding: 2px 6px; }
+.goal-edit:hover { color: var(--gold); }
+.goal-track { height: 7px; border-radius: 5px; background: rgba(255,255,255,0.06); overflow: hidden; margin-bottom: 9px; }
+.goal-fill { height: 100%; border-radius: 5px; background: linear-gradient(90deg, #b9862f, var(--gold)); transition: width 0.7s cubic-bezier(.4,0,.2,1); }
+.goal-fill.neg { background: linear-gradient(90deg, #8a2f2c, var(--red)); }
+.goal-nums { display: flex; align-items: baseline; justify-content: space-between; font-family: 'IBM Plex Mono', monospace; }
+.goal-nums .cur { font-size: 18px; font-weight: 600; }
+.goal-nums .cur.pos { color: var(--green); } .goal-nums .cur.neg { color: var(--red); }
+.goal-nums .target { font-size: 11.5px; color: var(--text-faint); }
+.goal-banner { margin-top: 11px; background: var(--gold-dim); border-radius: 9px; padding: 8px 11px; font-size: 12px; color: var(--gold); }
 
-  .bars { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 15px 17px 10px; margin-bottom: 14px; }
-  .bars-row { display: flex; align-items: flex-end; gap: 3px; height: 48px; }
-  .bar { flex: 1; background: var(--text-faint); border-radius: 2px; min-height: 2px; }
-  .bar.pos { background: var(--green); }
-  .bar.neg { background: var(--red); }
+.weekdays { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-bottom: 6px; }
+.weekdays span { text-align: center; font-size: 10.5px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.03em; }
+.grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-bottom: 16px; }
+.cell { aspect-ratio: 1; border-radius: 10px; border: 1px solid var(--line); background: var(--card); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; font-family: 'IBM Plex Mono', monospace; position: relative; overflow: hidden; transition: border-color 0.15s; }
+.cell:active { transform: scale(0.94); }
+.cell:hover { border-color: var(--border-strong, rgba(255,255,255,0.15)); }
+.cell.out { visibility: hidden; }
+.cell .d { position: absolute; top: 4px; left: 6px; font-size: 8.5px; color: var(--text-faint); font-family: 'Inter', sans-serif; z-index: 2; opacity: 0.7; }
+.cell.filled .d { color: rgba(255,255,255,0.7); }
+.cell .p { font-size: 12px; font-weight: 800; line-height: 1.15; text-align: center; padding: 0 2px; z-index: 2; color: #ffffff; letter-spacing: -0.01em; }
+.cell .tgt { font-size: 9px; font-weight: 600; color: var(--gold); opacity: 0.75; line-height: 1.1; text-align: center; padding: 0 2px; z-index: 2; }
+.cell.weekend { background: rgba(255,255,255,0.015); border-color: transparent; }
+.cell.weekend .d { opacity: 0.3; }
+.cell .closed { font-size: 8px; color: var(--text-faint); opacity: 0.5; text-transform: uppercase; letter-spacing: 0.03em; z-index: 2; }
+.cell.today { border-color: var(--gold); }
+.cell.today::after { content:''; position:absolute; bottom:4px; left:50%; transform:translateX(-50%); width:4px; height:4px; border-radius:50%; background: var(--gold); }
+.cell.today.filled::after, .cell.today.weekend::after { display:none; }
+.badge { position: absolute; top: 2px; right: 3px; width: 12px; height: 12px; z-index: 3; }
+.badge svg { width: 100%; height: 100%; }
+.note-dot { position: absolute; bottom: 4px; right: 4px; width: 4px; height: 4px; border-radius: 50%; background: var(--gold); z-index: 3; }
 
-  .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 10; padding: 20px; }
-  .overlay.show { display: flex; }
-  .modal { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 20px; width: 100%; max-width: 300px; }
-  .modal h3 { margin: 0 0 4px; font-family: 'Space Grotesk', sans-serif; font-size: 16px; }
-  .modal .sub { font-size: 12px; color: var(--text-faint); margin-bottom: 16px; }
-  .toggle-row { display: flex; gap: 8px; margin-bottom: 12px; }
-  .toggle-row button { flex: 1; padding: 9px; border-radius: 9px; border: 1px solid var(--line); background: transparent; color: var(--text-dim); cursor: pointer; font-size: 13px; font-weight: 500; }
-  .toggle-row button.active.gain { background: var(--green-dim); color: var(--green); border-color: var(--green); }
-  .toggle-row button.active.loss { background: var(--red-dim); color: var(--red); border-color: var(--red); }
-  .modal input[type=text] { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--line); color: var(--text); border-radius: 9px; padding: 11px 12px; font-family: 'IBM Plex Mono', monospace; font-size: 16px; margin-bottom: 14px; }
-  .modal input[type=text]:focus { outline: none; border-color: var(--gold); }
-  .modal-actions { display: flex; gap: 8px; }
-  .modal-actions button { flex: 1; padding: 10px; border-radius: 9px; border: none; cursor: pointer; font-size: 13px; font-weight: 600; }
-  .btn-save { background: var(--gold); color: #241a06; }
-  .btn-del { background: rgba(255,255,255,0.06); color: var(--text-dim); }
-  .btn-cancel { background: transparent; color: var(--text-faint); }
-  .loading { text-align: center; padding: 60px 0; color: var(--text-faint); font-size: 13px; }
+.kpi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 14px; }
+.kpi { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px 13px; }
+.kpi-top { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; }
+.kpi-top svg { width: 14px; height: 14px; color: var(--text-faint); flex-shrink: 0; }
+.kpi-label { font-size: 10.5px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.04em; }
+.kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 16px; font-weight: 600; }
+.kpi-val.pos { color: var(--green); } .kpi-val.neg { color: var(--red); }
+.kpi-sub { font-size: 10.5px; color: var(--text-faint); margin-top: 2px; }
+
+.forecast-card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px 17px; margin-bottom: 14px; }
+.forecast-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.forecast-edit { background: none; border: none; color: var(--text-faint); cursor: pointer; font-size: 12.5px; }
+.forecast-edit:hover { color: var(--gold); }
+.forecast-pills { display: flex; gap: 6px; margin-bottom: 12px; }
+.forecast-pills button { flex: 1; background: rgba(255,255,255,0.04); border: 1px solid var(--line); color: var(--text-dim); padding: 6px; border-radius: 7px; font-size: 12px; cursor: pointer; font-family: 'Inter', sans-serif; }
+.forecast-pills button.active { background: var(--gold-dim); color: var(--gold); border-color: var(--gold); }
+.forecast-legend { display: flex; gap: 14px; margin-bottom: 8px; font-size: 11.5px; }
+.forecast-legend span { display: flex; align-items: center; gap: 5px; color: var(--text-dim); }
+.forecast-legend i { width: 9px; height: 9px; border-radius: 2px; display: inline-block; }
+.forecast-rows { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+.forecast-row { display: flex; justify-content: space-between; align-items: baseline; padding-top: 8px; border-top: 1px solid var(--line); }
+.forecast-row .fl { font-size: 12px; color: var(--text-dim); }
+.forecast-row .fv { font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 600; }
+.forecast-warn { font-size: 11.5px; color: var(--text-faint); margin-top: 12px; line-height: 1.5; padding-top: 10px; border-top: 1px solid var(--line); }
+.year-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px; }
+.year-months { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.mcard { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 13px 12px; cursor: pointer; }
+.mcard:active { transform: scale(0.97); }
+.mcard .mname { font-size: 11.5px; color: var(--text-dim); text-transform: capitalize; margin-bottom: 6px; }
+.mcard .mval { font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 600; }
+.mcard .mval.empty { color: var(--text-faint); font-weight: 400; }
+.mcard.current { border-color: var(--gold); }
+
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 10; padding: 20px; }
+.overlay.show { display: flex; }
+.modal { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 20px; width: 100%; max-width: 320px; max-height: 88vh; overflow-y: auto; }
+.modal h3 { margin: 0 0 4px; font-family: 'Space Grotesk', sans-serif; font-size: 16px; }
+.modal .sub { font-size: 12px; color: var(--text-faint); margin-bottom: 14px; }
+.field-label { font-size: 11.5px; color: var(--text-dim); margin-bottom: 6px; display: block; }
+.toggle-row { display: flex; gap: 8px; margin-bottom: 12px; }
+.toggle-row button { flex: 1; padding: 9px; border-radius: 9px; border: 1px solid var(--line); background: transparent; color: var(--text-dim); cursor: pointer; font-size: 13px; font-weight: 500; }
+.toggle-row button.active.gain { background: var(--green-dim); color: var(--green); border-color: var(--green); }
+.toggle-row button.active.loss { background: var(--red-dim); color: var(--red); border-color: var(--red); }
+.modal input[type=text], .modal textarea { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--line); color: var(--text); border-radius: 9px; padding: 10px 12px; font-family: 'IBM Plex Mono', monospace; font-size: 15px; margin-bottom: 12px; }
+.modal textarea { font-family: 'Inter', sans-serif; font-size: 13px; resize: none; height: 60px; }
+.modal input[type=text]:focus, .modal textarea:focus { outline: none; border-color: var(--gold); }
+.modal-actions { display: flex; gap: 8px; }
+.modal-actions button { flex: 1; padding: 10px; border-radius: 9px; border: none; cursor: pointer; font-size: 13px; font-weight: 600; }
+.btn-save { background: var(--gold); color: #241a06; }
+.btn-del { background: rgba(255,255,255,0.06); color: var(--text-dim); }
+.btn-cancel { background: transparent; color: var(--text-faint); }
+.loading { text-align: center; padding: 60px 0; color: var(--text-faint); font-size: 13px; }
 </style>
 </head>
 <body>
 
-
 <div class="app" id="app">
   <div class="loading" id="loading">Chargement du journal…</div>
 </div>
+
+<div class="fab"><button onclick="quickAddToday()" aria-label="Ajouter le résultat d'aujourd'hui">+</button></div>
 
 <div class="overlay" id="overlay">
   <div class="modal">
@@ -262,7 +180,10 @@
       <button id="btnGain" class="gain">Gain</button>
       <button id="btnLoss" class="loss">Perte</button>
     </div>
-    <input type="text" inputmode="decimal" id="amountInput" placeholder="Montant en € (ex: 4,92)" />
+    <label class="field-label">Montant net (€)</label>
+    <input type="text" inputmode="decimal" id="amountInput" placeholder="ex: 4,92" />
+    <label class="field-label">Note (optionnel)</label>
+    <textarea id="noteInput" placeholder="ex: bot a doublé la taille après 2 pertes"></textarea>
     <div class="modal-actions">
       <button class="btn-del" id="btnDelete" style="display:none">Supprimer</button>
       <button class="btn-cancel" id="btnCancel">Annuler</button>
@@ -283,26 +204,9 @@
   </div>
 </div>
 
-
 <script>
-function lsGet(key){
-  try { const v = localStorage.getItem(key); return v; } catch(e) { return null; }
-}
-function lsSet(key, val){
-  try { localStorage.setItem(key, val); return true; } catch(e) { return false; }
-}
-function lsListPrefix(prefix){
-  const keys = [];
-  try {
-    for (let i = 0; i < localStorage.length; i++) {
-      const k = localStorage.key(i);
-      if (k && k.startsWith(prefix)) keys.push(k);
-    }
-  } catch(e) {}
-  return keys;
-}
-
 const MONTHS_FR = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+const MONTHS_SHORT_FR = ['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
 const DAYS_FR = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
 
 const ICONS = {
@@ -313,47 +217,80 @@ const ICONS = {
   waves: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 15c2-3 4-3 6 0s4 3 6 0 4-3 6 0"/></svg>',
   flame: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3s4 3.5 4 7.5a4 4 0 0 1-8 0c0-1 .3-1.8.8-2.6C9.3 9.5 9 11 9 12a3 3 0 0 0 6 0c0-3.5-3-6-3-9z"/><path d="M7 15a5 5 0 0 0 10 0c0-1.5-.5-2.8-1.3-4"/></svg>',
   crown: '<svg viewBox="0 0 24 24" fill="none" stroke="#d9a94f" stroke-width="1.8" stroke-linejoin="round"><path d="M3 8l4 3 5-6 5 6 4-3-2 9H5z"/></svg>',
-  drop: '<svg viewBox="0 0 24 24" fill="none" stroke="#e8615c" stroke-width="1.8" stroke-linejoin="round"><path d="M12 4c3 4 6 7.5 6 11a6 6 0 0 1-12 0c0-3.5 3-7 6-11z"/></svg>'
+  drop: '<svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linejoin="round"><path d="M12 4c3 4 6 7.5 6 11a6 6 0 0 1-12 0c0-3.5 3-7 6-11z"/></svg>',
+  download: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3v13m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>'
 };
+
+function lsGet(key){ try { return localStorage.getItem(key); } catch(e) { return null; } }
+function lsSet(key, val){ try { localStorage.setItem(key, val); return true; } catch(e) { return false; } }
+function lsListPrefix(prefix){
+  const keys = [];
+  try { for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k && k.startsWith(prefix)) keys.push(k); } } catch(e) {}
+  return keys;
+}
 
 let today = new Date();
 let viewYear = today.getFullYear();
 let viewMonth = today.getMonth();
-let goal = 1500;
+let viewMode = 'month';
 let startingCapital = 300;
+let forecastTargetPct = 2;
+let forecastHorizonDays = 126;
 let monthData = {};
 let sign = 'gain';
 
 function monthKey(y,m){ return 'month:'+y+'-'+(m+1); }
 
+function migrateEntry(raw){
+  if (typeof raw === 'number') return { pnl: raw, note: '' };
+  return { pnl: raw.pnl || 0, note: raw.note || '' };
+}
+function migrateData(obj){
+  const out = {};
+  for (const k in obj) out[k] = migrateEntry(obj[k]);
+  return out;
+}
+
 async function loadSettings(){
   const v = lsGet('settings');
   if (v) {
     const s = JSON.parse(v);
-    goal = s.goal ?? 1500;
     startingCapital = s.startingCapital ?? 300;
+    forecastTargetPct = s.forecastTargetPct ?? 2;
     return true;
   }
   return false;
 }
-async function saveSettings(){
-  lsSet('settings', JSON.stringify({goal, startingCapital}));
-}
+async function saveSettings(){ lsSet('settings', JSON.stringify({startingCapital, forecastTargetPct})); }
 async function loadMonth(y, m){
   const v = lsGet(monthKey(y, m));
-  return v ? JSON.parse(v) : {};
+  return v ? migrateData(JSON.parse(v)) : {};
 }
-async function saveMonth(){
-  lsSet(monthKey(viewYear, viewMonth), JSON.stringify(monthData));
-}
+async function saveMonth(){ lsSet(monthKey(viewYear, viewMonth), JSON.stringify(monthData)); }
 async function getAllTimeTotal(){
   let total = 0;
-  const keys = lsListPrefix('month:');
-  for (const k of keys) {
+  for (const k of lsListPrefix('month:')) {
     const v = lsGet(k);
-    if (v) total += Object.values(JSON.parse(v)).reduce((a,b)=>a+b,0);
+    if (v) { const d = migrateData(JSON.parse(v)); total += Object.values(d).reduce((a,e)=>a+e.pnl,0); }
   }
   return total;
+}
+async function getAllTimeStats(){
+  let total = 0, count = 0;
+  for (const k of lsListPrefix('month:')) {
+    const v = lsGet(k);
+    if (v) { const d = migrateData(JSON.parse(v)); const vals = Object.values(d).map(e=>e.pnl); total += vals.reduce((a,b)=>a+b,0); count += vals.length; }
+  }
+  return { total, count, avgDaily: count ? total/count : 0 };
+}
+async function getYearMonths(year){
+  const months = [];
+  for (let m = 0; m < 12; m++) {
+    const d = await loadMonth(year, m);
+    const total = Object.values(d).reduce((a,e)=>a+e.pnl,0);
+    months.push({ idx: m, data: d, total, count: Object.keys(d).length });
+  }
+  return months;
 }
 
 function fmtEUR(n){
@@ -364,9 +301,11 @@ function fmtEUR(n){
 function fmtEURplain(n){ return n.toLocaleString('fr-FR', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' €'; }
 function daysInMonth(y,m){ return new Date(y, m+1, 0).getDate(); }
 function firstWeekdayMon(y,m){ const d = new Date(y,m,1).getDay(); return d === 0 ? 6 : d - 1; }
+function isWeekendDay(y,m,d){ const wd = new Date(y,m,d).getDay(); return wd === 0 || wd === 6; }
+function weekdaysInMonthCount(y,m){ let c = 0; const dim = daysInMonth(y,m); for (let d=1; d<=dim; d++) if (!isWeekendDay(y,m,d)) c++; return c; }
 
 function computeKPIs(data){
-  const entries = Object.entries(data).map(([d,v])=>({day:+d, val:v})).sort((a,b)=>a.day-b.day);
+  const entries = Object.entries(data).map(([d,e])=>({day:+d, val:e.pnl, note:e.note})).sort((a,b)=>a.day-b.day);
   const vals = entries.map(e=>e.val);
   const gains = vals.filter(v=>v>0);
   const losses = vals.filter(v=>v<0).map(v=>Math.abs(v));
@@ -380,102 +319,178 @@ function computeKPIs(data){
   const expectancy = winRateFrac*avgWin - (1-winRateFrac)*avgLoss;
   let cum = 0, peak = 0, maxDD = 0;
   const curve = [];
-  for (const e of entries) {
-    cum += e.val;
-    curve.push({day: e.day, cum});
-    if (cum > peak) peak = cum;
-    const dd = peak - cum;
-    if (dd > maxDD) maxDD = dd;
-  }
+  for (const e of entries) { cum += e.val; curve.push({day: e.day, cum}); if (cum > peak) peak = cum; const dd = peak - cum; if (dd > maxDD) maxDD = dd; }
   let streak = 0, streakSign = 0;
-  for (let i = entries.length-1; i >= 0; i--) {
-    const s = entries[i].val >= 0 ? 1 : -1;
-    if (streak === 0) { streak = 1; streakSign = s; }
-    else if (s === streakSign) streak++;
-    else break;
-  }
+  for (let i = entries.length-1; i >= 0; i--) { const s = entries[i].val >= 0 ? 1 : -1; if (streak === 0) { streak = 1; streakSign = s; } else if (s === streakSign) streak++; else break; }
   const best = vals.length ? Math.max(...vals) : null;
   const worst = vals.length ? Math.min(...vals) : null;
-  const bestDay = entries.find(e=>e.val===best);
-  const worstDay = entries.find(e=>e.val===worst);
-  return {entries, vals, total, winRateFrac, profitFactor, avgWin, avgLoss, expectancy, maxDD, curve, streak, streakSign, best, worst, bestDay, worstDay};
+  return {entries, vals, total, winRateFrac, profitFactor, avgWin, avgLoss, expectancy, maxDD, curve, streak, streakSign, best, worst};
 }
 
 function renderCurve(curve){
-  if (curve.length < 2) {
-    return `<div class="curve-empty">Ajoute au moins 2 jours pour voir la courbe</div>`;
-  }
+  if (curve.length < 2) return `<div class="curve-empty">Ajoute au moins 2 jours pour voir la courbe</div>`;
   const w = 400, h = 90, pad = 6;
   const cums = curve.map(c=>c.cum);
   const min = Math.min(0, ...cums), max = Math.max(0, ...cums);
   const range = (max - min) || 1;
   const stepX = (w - pad*2) / (curve.length - 1);
-  const pts = curve.map((c,i) => {
-    const x = pad + i*stepX;
-    const y = h - pad - ((c.cum - min) / range) * (h - pad*2);
-    return [x,y];
-  });
+  const pts = curve.map((c,i) => { const x = pad + i*stepX; const y = h - pad - ((c.cum - min) / range) * (h - pad*2); return [x,y]; });
   const line = pts.map(p=>p.join(',')).join(' ');
   const areaPath = `M${pts[0][0]},${h-pad} L` + line.replace(/ /g,' L') + ` L${pts[pts.length-1][0]},${h-pad} Z`;
   const last = curve[curve.length-1].cum;
   const color = last >= 0 ? '#34c98e' : '#e8615c';
   const gradId = 'g' + Math.random().toString(36).slice(2,8);
   return `<svg viewBox="0 0 ${w} ${h}" style="width:100%;height:70px;display:block">
-    <defs>
-      <linearGradient id="${gradId}" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="${color}" stop-opacity="0.35"/>
-        <stop offset="100%" stop-color="${color}" stop-opacity="0"/>
-      </linearGradient>
-    </defs>
+    <defs><linearGradient id="${gradId}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${color}" stop-opacity="0.35"/><stop offset="100%" stop-color="${color}" stop-opacity="0"/></linearGradient></defs>
     <path d="${areaPath}" fill="url(#${gradId})"/>
-    <polyline points="${line}" fill="none" stroke="${color}" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
-    <circle cx="${pts[pts.length-1][0]}" cy="${pts[pts.length-1][1]}" r="3" fill="${color}"/>
+    <polyline class="curve-draw" points="${line}" fill="none" stroke="${color}" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+    <circle cx="${pts[pts.length-1][0]}" cy="${pts[pts.length-1][1]}" r="3" fill="${color}" style="animation: fadeUp 0.3s ease 0.9s both"/>
   </svg>`;
 }
 
 async function render(){
+  if (viewMode === 'year') { await renderYear(); return; }
+  await renderMonth();
+}
+
+function compoundCurve(capital0, pct, days, sampleCount){
+  const pts = [];
+  const step = Math.max(1, Math.round(days/sampleCount));
+  for (let d = 0; d <= days; d += step) {
+    pts.push(capital0 * Math.pow(1 + pct/100, d));
+  }
+  if (pts.length && (days % step !== 0)) pts.push(capital0 * Math.pow(1 + pct/100, days));
+  return pts;
+}
+
+function renderForecastChart(targetPts, realPts){
+  const w = 400, h = 100, pad = 6;
+  const all = targetPts.concat(realPts);
+  const min = Math.min(...all), max = Math.max(...all);
+  const range = (max - min) || 1;
+  const toPath = (pts) => pts.map((v,i) => {
+    const x = pad + (i/(pts.length-1)) * (w - pad*2);
+    const y = h - pad - ((v - min)/range) * (h - pad*2);
+    return [x,y];
+  });
+  const targetXY = toPath(targetPts);
+  const realXY = toPath(realPts);
+  const line = (xy, color) => `<polyline points="${xy.map(p=>p.join(',')).join(' ')}" fill="none" stroke="${color}" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>`;
+  return `<svg viewBox="0 0 ${w} ${h}" style="width:100%;height:80px;display:block">
+    ${line(realXY, '#8a8f98')}
+    ${line(targetXY, '#d9a94f')}
+  </svg>`;
+}
+
+async function renderForecastCard(currentCapital){
+  const stats = await getAllTimeStats();
+  const realDailyPct = startingCapital > 0 ? (stats.avgDaily/startingCapital)*100 : 0;
+  const days = forecastHorizonDays;
+  const targetPts = compoundCurve(currentCapital, forecastTargetPct, days, 40);
+  const realPts = compoundCurve(currentCapital, realDailyPct, days, 40);
+  const targetFinal = targetPts[targetPts.length-1];
+  const realFinal = realPts[realPts.length-1];
+  const months = Math.round(days/21);
+  return `
+    <div class="section-label">Prévisionnel</div>
+    <div class="forecast-card">
+      <div class="forecast-head">
+        <span class="goal-label">Objectif : ${forecastTargetPct}%/jour composé</span>
+      </div>
+      <div class="forecast-pills">
+        <button class="${forecastHorizonDays===21?'active':''}" onclick="setForecastHorizon(21)">1 mois</button>
+        <button class="${forecastHorizonDays===63?'active':''}" onclick="setForecastHorizon(63)">3 mois</button>
+        <button class="${forecastHorizonDays===126?'active':''}" onclick="setForecastHorizon(126)">6 mois</button>
+      </div>
+      <div class="forecast-legend">
+        <span><i style="background:#d9a94f"></i>Objectif (${forecastTargetPct}%/j)</span>
+        <span><i style="background:#8a8f98"></i>Ton rythme réel (${realDailyPct>=0?'+':''}${realDailyPct.toFixed(2)}%/j)</span>
+      </div>
+      ${renderForecastChart(targetPts, realPts)}
+      <div class="forecast-rows">
+        <div class="forecast-row"><span class="fl">Objectif dans ~${months} mois</span><span class="fv" style="color:var(--gold)">${fmtEURplain(targetFinal)}</span></div>
+        <div class="forecast-row"><span class="fl">À ton rythme réel dans ~${months} mois</span><span class="fv" style="color:${realFinal>=currentCapital?'var(--green)':'var(--red)'}">${fmtEURplain(realFinal)}</span></div>
+      </div>
+      <div class="forecast-warn">Scénario théorique à titre indicatif, pas une prévision fiable. ${forecastTargetPct}%/jour composé pendant ${months} mois suppose un rendement constant, sans tenir compte des séries de pertes — un rythme rarement soutenu dans la durée, en particulier avec une stratégie grid/martingale où un seul mauvais mouvement peut effacer plusieurs mois de gains.</div>
+    </div>
+  `;
+}
+
+function setForecastHorizon(days){ forecastHorizonDays = days; render(); }
+function editForecastTarget(){
+  settingsField = 'forecastTarget';
+  document.getElementById('settingsTitle').textContent = 'Objectif quotidien';
+  document.getElementById('settingsSub').textContent = 'Rendement cible par jour, en % du capital';
+  document.getElementById('settingsInput').value = forecastTargetPct.toString().replace('.', ',');
+  document.getElementById('settingsOverlay').classList.add('show');
+  setTimeout(()=>document.getElementById('settingsInput').focus(), 50);
+}
+
+async function renderMonth(){
   const kpi = computeKPIs(monthData);
   const allTimeTotal = await getAllTimeTotal();
   const currentCapital = startingCapital + allTimeTotal;
   const roi = startingCapital > 0 ? (allTimeTotal / startingCapital) * 100 : 0;
 
-  const pct = goal !== 0 ? (kpi.total/goal)*100 : 0;
-  const pctClamped = Math.max(0, Math.min(100, pct));
-  const crushed = kpi.total >= goal && goal > 0;
   const dim = daysInMonth(viewYear, viewMonth);
   const startOffset = firstWeekdayMon(viewYear, viewMonth);
   const isCurrentMonth = viewYear === today.getFullYear() && viewMonth === today.getMonth();
   const maxAbsMonth = Math.max(1, ...kpi.vals.map(v=>Math.abs(v)), 1);
+  const capitalStartOfMonth = currentCapital - kpi.total;
+  const weekdaysCount = weekdaysInMonthCount(viewYear, viewMonth);
+  const goal = capitalStartOfMonth > 0 ? capitalStartOfMonth * (Math.pow(1 + forecastTargetPct/100, weekdaysCount) - 1) : 0;
+
+  const pct = goal !== 0 ? (kpi.total/goal)*100 : 0;
+  const pctClamped = Math.max(0, Math.min(100, pct));
+  const crushed = kpi.total >= goal && goal > 0;
+  const targetFinalCapital = capitalStartOfMonth + goal;
+  let remainingDays = 0;
+  if (isCurrentMonth) {
+    for (let d = today.getDate(); d <= dim; d++) if (!isWeekendDay(viewYear, viewMonth, d)) remainingDays++;
+  }
+  let dailyRate = 0;
+  if (remainingDays > 0 && currentCapital > 0 && targetFinalCapital > currentCapital) {
+    dailyRate = Math.pow(targetFinalCapital / currentCapital, 1/remainingDays) - 1;
+  }
+  const dayTargets = {};
+  if (dailyRate > 0) {
+    let tradingIndex = 0;
+    for (let d = today.getDate(); d <= dim; d++) {
+      if (isWeekendDay(viewYear, viewMonth, d)) continue;
+      const capBeforeDay = currentCapital * Math.pow(1 + dailyRate, tradingIndex);
+      dayTargets[d] = capBeforeDay * dailyRate;
+      tradingIndex++;
+    }
+  }
 
   let cells = '';
   for (let i=0; i<startOffset; i++) cells += '<div class="cell out"></div>';
   for (let d=1; d<=dim; d++){
-    const val = monthData[d];
-    const has = val !== undefined;
+    const entry = monthData[d];
+    const has = entry !== undefined;
+    const val = has ? entry.pnl : 0;
     const isToday = isCurrentMonth && d === today.getDate();
-    let bg = '', color = '';
-    if (has) {
-      const intensity = 0.14 + 0.5 * (Math.abs(val)/maxAbsMonth);
-      if (val >= 0) { bg = `rgba(52,201,142,${intensity})`; color = '#eafff5'; }
-      else { bg = `rgba(232,97,92,${intensity})`; color = '#fff0ef'; }
-    }
     let badge = '';
     if (has && kpi.entries.length > 1) {
       if (val === kpi.best && val > 0) badge = `<div class="badge">${ICONS.crown}</div>`;
       else if (val === kpi.worst && val < 0) badge = `<div class="badge">${ICONS.drop}</div>`;
     }
-    cells += `<div class="cell ${has?'filled':'empty'} ${isToday?'today':''}" style="${has?`background:${bg};color:${color}`:''}" onclick="openDay(${d})">
-      ${badge}
-      <span class="d" style="${has?`color:${color};opacity:0.75`:''}">${d}</span>
-      ${has ? `<span class="p">${fmtEUR(val)}</span>` : ''}
+    const noteDot = (has && entry.note) ? `<div class="note-dot"></div>` : '';
+    const isWknd = isWeekendDay(viewYear, viewMonth, d);
+    const showTarget = !has && isCurrentMonth && dayTargets[d] !== undefined;
+    let content, cellStyle = '';
+    if (has) {
+      content = `<span class="p">${fmtEUR(val)}</span>`;
+      cellStyle = ` style="background:${val>=0?'var(--green)':'var(--red)'}"`;
+    }
+    else if (isWknd) content = `<span class="closed">Fermé</span>`;
+    else if (showTarget) content = `<span class="tgt">~${fmtEURplain(dayTargets[d])}</span>`;
+    else content = '';
+    cells += `<div class="cell ${has?'filled':(isWknd?'weekend':'empty')} ${isToday?'today':''}"${cellStyle} onclick="openDay(${d})">
+      ${badge}${noteDot}
+      <span class="d">${d}</span>
+      ${content}
     </div>`;
-  }
-
-  const barsRow = [];
-  for (let d=1; d<=dim; d++){
-    const v = monthData[d];
-    const h = v ? Math.max(4, Math.round((Math.abs(v)/maxAbsMonth)*40)) : 2;
-    barsRow.push(`<div class="bar ${v>0?'pos':v<0?'neg':''}" style="height:${h}px" title="${d}: ${v?fmtEUR(v):'—'}"></div>`);
   }
 
   const pfDisplay = kpi.profitFactor === null ? '∞' : kpi.profitFactor.toFixed(2);
@@ -484,22 +499,24 @@ async function render(){
   document.getElementById('app').innerHTML = `
     <div class="brand">
       <h1>Journal de trading</h1>
-      <span class="ticker">XAUUSD</span>
+      <div class="brand-right">
+        <button class="icon-btn" onclick="exportCSV()" aria-label="Exporter">${ICONS.download}</button>
+        <span class="ticker">XAUUSD</span>
+      </div>
     </div>
 
-    <div class="capital-card">
+    <div class="capital-card fade-in">
       <button class="edit-cap" onclick="editCapital()">Modifier</button>
       <div class="cap-label">Capital actuel</div>
       <div class="cap-value">${fmtEURplain(currentCapital)}</div>
       <div class="cap-sub"><span class="${allTimeTotal>=0?'pos':'neg'}">${fmtEUR(allTimeTotal)}</span> · ${roi>=0?'+':''}${roi.toFixed(2)}% depuis le départ (${fmtEURplain(startingCapital)})</div>
+      <div class="cap-curve-title">Courbe de capital — ${MONTHS_FR[viewMonth]} <span style="color:${kpi.total>=0?'var(--green)':'var(--red)'}">${fmtEUR(kpi.total)}</span></div>
+      ${renderCurve(kpi.curve)}
     </div>
 
-    <div class="curve-card">
-      <div class="curve-head">
-        <span class="curve-title">Courbe de capital — ${MONTHS_FR[viewMonth]}</span>
-        <span class="curve-now ${kpi.total>=0?'pos':'neg'}" style="color:${kpi.total>=0?'var(--green)':'var(--red)'}">${fmtEUR(kpi.total)}</span>
-      </div>
-      ${renderCurve(kpi.curve)}
+    <div class="view-toggle">
+      <button class="active" onclick="setViewMode('month')">Mois</button>
+      <button onclick="setViewMode('year')">Année</button>
     </div>
 
     <div class="nav">
@@ -510,8 +527,11 @@ async function render(){
 
     <div class="goal-card">
       <div class="goal-top">
-        <span class="goal-label">Objectif mensuel</span>
-        <button class="goal-edit" onclick="editGoal()">Modifier</button>
+        <div>
+          <div class="goal-label">Objectif mensuel</div>
+          <div class="goal-rate">${forecastTargetPct}%/jour composé</div>
+        </div>
+        <button class="goal-edit" onclick="editForecastTarget()">Modifier</button>
       </div>
       <div class="goal-track"><div class="goal-fill ${kpi.total<0?'neg':''}" style="width:${pctClamped}%"></div></div>
       <div class="goal-nums">
@@ -523,45 +543,80 @@ async function render(){
 
     <div class="weekdays">${DAYS_FR.map(d=>`<span>${d}</span>`).join('')}</div>
     <div class="grid">${cells}</div>
+    ${(isCurrentMonth && dailyRate > 0) ? `<div style="font-size:11px;color:var(--text-faint);margin:-8px 0 16px;text-align:center">En or : objectif quotidien composé (${(dailyRate*100).toFixed(2)}%/jour) pour atteindre ton but</div>` : ''}
 
     <div class="section-label">Indicateurs de performance</div>
     <div class="kpi-grid">
-      <div class="kpi">
-        <div class="kpi-top">${ICONS.scale}<span class="kpi-label">Profit factor</span></div>
-        <div class="kpi-val ${kpi.profitFactor!==null && kpi.profitFactor>=1?'pos':(kpi.profitFactor!==null?'neg':'')}">${kpi.vals.length?pfDisplay:'—'}</div>
-        <div class="kpi-sub">gains / pertes</div>
-      </div>
-      <div class="kpi">
-        <div class="kpi-top">${ICONS.target}<span class="kpi-label">Espérance / trade</span></div>
-        <div class="kpi-val ${kpi.expectancy>=0?'pos':'neg'}">${kpi.vals.length?fmtEUR(kpi.expectancy):'—'}</div>
-        <div class="kpi-sub">gain moyen attendu</div>
-      </div>
-      <div class="kpi">
-        <div class="kpi-top">${ICONS.trendUp}<span class="kpi-label">Gain moyen</span></div>
-        <div class="kpi-val pos">${kpi.avgWin?fmtEURplain(kpi.avgWin):'—'}</div>
-        <div class="kpi-sub">sur les jours gagnants</div>
-      </div>
-      <div class="kpi">
-        <div class="kpi-top">${ICONS.trendDown}<span class="kpi-label">Perte moyenne</span></div>
-        <div class="kpi-val neg">${kpi.avgLoss?fmtEURplain(kpi.avgLoss):'—'}</div>
-        <div class="kpi-sub">sur les jours perdants</div>
-      </div>
-      <div class="kpi">
-        <div class="kpi-top">${ICONS.waves}<span class="kpi-label">Drawdown max</span></div>
-        <div class="kpi-val ${kpi.maxDD>0?'neg':''}">${kpi.maxDD>0?'-'+fmtEURplain(kpi.maxDD):'—'}</div>
-        <div class="kpi-sub">pire creux vs pic</div>
-      </div>
-      <div class="kpi">
-        <div class="kpi-top">${ICONS.flame}<span class="kpi-label">Série actuelle</span></div>
-        <div class="kpi-val ${kpi.streakSign>0?'pos':(kpi.streakSign<0?'neg':'')}">${kpi.streak||'—'}</div>
-        <div class="kpi-sub">${streakLabel}</div>
+      <div class="kpi"><div class="kpi-top">${ICONS.scale}<span class="kpi-label">Profit factor</span></div><div class="kpi-val ${kpi.profitFactor!==null && kpi.profitFactor>=1?'pos':(kpi.profitFactor!==null?'neg':'')}">${kpi.vals.length?pfDisplay:'—'}</div><div class="kpi-sub">gains / pertes</div></div>
+      <div class="kpi"><div class="kpi-top">${ICONS.target}<span class="kpi-label">Espérance / trade</span></div><div class="kpi-val ${kpi.expectancy>=0?'pos':'neg'}">${kpi.vals.length?fmtEUR(kpi.expectancy):'—'}</div><div class="kpi-sub">gain moyen attendu</div></div>
+      <div class="kpi"><div class="kpi-top">${ICONS.trendUp}<span class="kpi-label">Gain moyen</span></div><div class="kpi-val pos">${kpi.avgWin?fmtEURplain(kpi.avgWin):'—'}</div><div class="kpi-sub">jours gagnants</div></div>
+      <div class="kpi"><div class="kpi-top">${ICONS.trendDown}<span class="kpi-label">Perte moyenne</span></div><div class="kpi-val neg">${kpi.avgLoss?fmtEURplain(kpi.avgLoss):'—'}</div><div class="kpi-sub">jours perdants</div></div>
+      <div class="kpi"><div class="kpi-top">${ICONS.waves}<span class="kpi-label">Drawdown max</span></div><div class="kpi-val ${kpi.maxDD>0?'neg':''}">${kpi.maxDD>0?'-'+fmtEURplain(kpi.maxDD):'—'}</div><div class="kpi-sub">pire creux vs pic</div></div>
+      <div class="kpi"><div class="kpi-top">${ICONS.flame}<span class="kpi-label">Série actuelle</span></div><div class="kpi-val ${kpi.streakSign>0?'pos':(kpi.streakSign<0?'neg':'')}">${kpi.streak||'—'}</div><div class="kpi-sub">${streakLabel}</div></div>
+    </div>
+
+    ${await renderForecastCard(currentCapital)}
+  `;
+}
+
+async function renderYear(){
+  const months = await getYearMonths(viewYear);
+  const allEntries = [];
+  months.forEach(m => { Object.entries(m.data).forEach(([d,e]) => allEntries.push(e.pnl)); });
+  const total = allEntries.reduce((a,b)=>a+b,0);
+  const wins = allEntries.filter(v=>v>0).length;
+  const winRate = allEntries.length ? Math.round((wins/allEntries.length)*100) : 0;
+  const monthsWithData = months.filter(m=>m.count>0);
+  const bestMonth = monthsWithData.length ? monthsWithData.reduce((a,b)=>b.total>a.total?b:a) : null;
+  const worstMonth = monthsWithData.length ? monthsWithData.reduce((a,b)=>b.total<a.total?b:a) : null;
+
+  const allTimeTotal = await getAllTimeTotal();
+  const currentCapital = startingCapital + allTimeTotal;
+  const roi = startingCapital > 0 ? (allTimeTotal / startingCapital) * 100 : 0;
+
+  const monthCards = months.map(m => {
+    const isCurrent = viewYear === today.getFullYear() && m.idx === today.getMonth();
+    return `<div class="mcard ${isCurrent?'current':''}" onclick="jumpToMonth(${m.idx})">
+      <div class="mname">${MONTHS_SHORT_FR[m.idx]}</div>
+      <div class="mval ${m.count===0?'empty':(m.total>=0?'pos':'neg')}" style="${m.count>0?`color:${m.total>=0?'var(--green)':'var(--red)'}`:''}">${m.count>0?fmtEUR(m.total):'—'}</div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('app').innerHTML = `
+    <div class="brand">
+      <h1>Journal de trading</h1>
+      <div class="brand-right">
+        <button class="icon-btn" onclick="exportCSV()" aria-label="Exporter">${ICONS.download}</button>
+        <span class="ticker">XAUUSD</span>
       </div>
     </div>
 
-    <div class="bars">
-      <div class="section-label" style="margin-bottom:10px">Volatilité quotidienne</div>
-      <div class="bars-row">${barsRow.join('')}</div>
+    <div class="capital-card">
+      <button class="edit-cap" onclick="editCapital()">Modifier</button>
+      <div class="cap-label">Capital actuel</div>
+      <div class="cap-value">${fmtEURplain(currentCapital)}</div>
+      <div class="cap-sub"><span class="${allTimeTotal>=0?'pos':'neg'}">${fmtEUR(allTimeTotal)}</span> · ${roi>=0?'+':''}${roi.toFixed(2)}% depuis le départ (${fmtEURplain(startingCapital)})</div>
     </div>
+
+    <div class="view-toggle">
+      <button onclick="setViewMode('month')">Mois</button>
+      <button class="active" onclick="setViewMode('year')">Année</button>
+    </div>
+
+    <div class="nav">
+      <button onclick="changeYear(-1)">‹</button>
+      <span class="month-label">${viewYear}</span>
+      <button onclick="changeYear(1)">›</button>
+    </div>
+
+    <div class="year-stats">
+      <div class="kpi"><div class="kpi-label">P&L annuel</div><div class="kpi-val ${total>=0?'pos':'neg'}" style="margin-top:6px">${fmtEUR(total)}</div></div>
+      <div class="kpi"><div class="kpi-label">Taux de réussite</div><div class="kpi-val" style="margin-top:6px">${winRate}%</div></div>
+      <div class="kpi"><div class="kpi-label">Meilleur mois</div><div class="kpi-val pos" style="margin-top:6px">${bestMonth?fmtEUR(bestMonth.total):'—'}</div></div>
+    </div>
+
+    <div class="section-label">Détail par mois</div>
+    <div class="year-months">${monthCards}</div>
   `;
 }
 
@@ -571,16 +626,11 @@ function changeMonth(delta){
   if (viewMonth < 0) { viewMonth = 11; viewYear--; }
   loadMonth(viewYear, viewMonth).then(d => { monthData = d; render(); });
 }
+function changeYear(delta){ viewYear += delta; render(); }
+function setViewMode(mode){ viewMode = mode; render(); }
+function jumpToMonth(idx){ viewMonth = idx; viewMode = 'month'; loadMonth(viewYear, viewMonth).then(d => { monthData = d; render(); }); }
 
 let settingsField = null;
-function editGoal(){
-  settingsField = 'goal';
-  document.getElementById('settingsTitle').textContent = 'Objectif mensuel';
-  document.getElementById('settingsSub').textContent = 'Montant à viser chaque mois';
-  document.getElementById('settingsInput').value = goal.toString().replace('.', ',');
-  document.getElementById('settingsOverlay').classList.add('show');
-  setTimeout(()=>document.getElementById('settingsInput').focus(), 50);
-}
 function editCapital(){
   settingsField = 'capital';
   document.getElementById('settingsTitle').textContent = 'Capital de départ';
@@ -595,20 +645,30 @@ document.getElementById('settingsSave').onclick = async ()=>{
   const raw = document.getElementById('settingsInput').value.replace(',', '.').replace(/\s/g,'');
   const n = parseFloat(raw);
   if (isNaN(n) || n < 0) return;
-  if (settingsField === 'goal' && n > 0) goal = n;
   if (settingsField === 'capital') startingCapital = n;
+  if (settingsField === 'forecastTarget') forecastTargetPct = n;
   await saveSettings();
   document.getElementById('settingsOverlay').classList.remove('show');
   render();
 };
 
 let activeDay = null;
+async function quickAddToday(){
+  const y = today.getFullYear(), m = today.getMonth(), d = today.getDate();
+  if (viewYear !== y || viewMonth !== m || viewMode !== 'month') {
+    viewYear = y; viewMonth = m; viewMode = 'month';
+    monthData = await loadMonth(viewYear, viewMonth);
+    await render();
+  }
+  openDay(d);
+}
 function openDay(d){
   activeDay = d;
   const existing = monthData[d];
-  sign = (existing !== undefined && existing < 0) ? 'perte' : 'gain';
+  sign = (existing !== undefined && existing.pnl < 0) ? 'perte' : 'gain';
   document.getElementById('modalDay').textContent = `${d} ${MONTHS_FR[viewMonth]}`;
-  document.getElementById('amountInput').value = existing !== undefined ? fmtEURplain(Math.abs(existing)).replace(' €','') : '';
+  document.getElementById('amountInput').value = existing ? fmtEURplain(Math.abs(existing.pnl)).replace(' €','') : '';
+  document.getElementById('noteInput').value = existing ? (existing.note || '') : '';
   document.getElementById('btnDelete').style.display = existing !== undefined ? 'block' : 'none';
   updateToggle();
   document.getElementById('overlay').classList.add('show');
@@ -625,7 +685,11 @@ document.getElementById('btnSave').onclick = async ()=>{
   const raw = document.getElementById('amountInput').value.replace(',', '.').replace(/\s/g,'');
   const n = parseFloat(raw);
   if (isNaN(n) || n < 0) return;
-  monthData[activeDay] = Math.round((sign === 'perte' ? -n : n) * 100) / 100;
+  const note = document.getElementById('noteInput').value.trim();
+  monthData[activeDay] = {
+    pnl: Math.round((sign === 'perte' ? -n : n) * 100) / 100,
+    note
+  };
   await saveMonth();
   document.getElementById('overlay').classList.remove('show');
   render();
@@ -638,18 +702,42 @@ document.getElementById('btnDelete').onclick = async ()=>{
 };
 document.getElementById('overlay').addEventListener('click', (e)=>{ if (e.target.id === 'overlay') e.target.classList.remove('show'); });
 
+async function exportCSV(){
+  const rows = [['Date','Résultat net (€)','Note']];
+  const keys = lsListPrefix('month:').sort();
+  for (const k of keys) {
+    const parts = k.replace('month:','').split('-');
+    const y = parseInt(parts[0]), m = parseInt(parts[1]);
+    const v = lsGet(k);
+    if (!v) continue;
+    const data = migrateData(JSON.parse(v));
+    const days = Object.keys(data).map(x=>parseInt(x)).sort((a,b)=>a-b);
+    for (const d of days) {
+      const e = data[d];
+      const dateStr = `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+      rows.push([dateStr, e.pnl.toFixed(2).replace('.',','), (e.note||'').replace(/;/g,',')]);
+    }
+  }
+  const csv = rows.map(r => r.join(';')).join('\n');
+  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'journal-trading-export.csv';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
 function isCurrentMonthJuly2026(){ return viewYear === 2026 && viewMonth === 6; }
 
 (async function init(){
   const hadSettings = await loadSettings();
-  if (!hadSettings) {
-    startingCapital = 300;
-    goal = 1500;
-    await saveSettings();
-  }
+  if (!hadSettings) { startingCapital = 300; forecastTargetPct = 2; await saveSettings(); }
   monthData = await loadMonth(viewYear, viewMonth);
   if (isCurrentMonthJuly2026() && Object.keys(monthData).length === 0) {
-    monthData = { "2": 4.92, "3": -7.61 };
+    monthData = { "2": {pnl: 4.92, note: ''}, "3": {pnl: -7.61, note: ''} };
     await saveMonth();
   }
   render();
