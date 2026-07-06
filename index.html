@@ -92,23 +92,21 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
 .weekdays { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-bottom: 6px; }
 .weekdays span { text-align: center; font-size: 10.5px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.03em; }
 .grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-bottom: 16px; }
-.cell { aspect-ratio: 1; border-radius: 10px; border: 1px solid var(--line); background: var(--card); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; font-family: 'IBM Plex Mono', monospace; position: relative; overflow: hidden; transition: border-color 0.15s; }
+.cell { aspect-ratio: 1; border-radius: 12px; border: 1px solid var(--line); background: var(--card); display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start; padding: 8px 0 0 9px; cursor: pointer; font-family: 'IBM Plex Mono', monospace; position: relative; overflow: hidden; transition: border-color 0.15s; }
 .cell:active { transform: scale(0.94); }
 .cell:hover { border-color: var(--border-strong, rgba(255,255,255,0.15)); }
 .cell.out { visibility: hidden; }
-.cell .d { position: absolute; top: 4px; left: 6px; font-size: 8.5px; color: var(--text-faint); font-family: 'Inter', sans-serif; z-index: 2; opacity: 0.7; }
-.cell.filled .d { color: rgba(255,255,255,0.7); }
-.cell .p { font-size: 12px; font-weight: 800; line-height: 1.15; text-align: center; padding: 0 2px; z-index: 2; color: #ffffff; letter-spacing: -0.01em; }
-.cell .tgt { font-size: 9px; font-weight: 600; color: var(--gold); opacity: 0.75; line-height: 1.1; text-align: center; padding: 0 2px; z-index: 2; }
+.cell .d { font-size: 10px; font-weight: 500; color: var(--text-faint); font-family: 'Inter', sans-serif; z-index: 2; opacity: 0.6; }
+.cell.filled .d { color: rgba(255,255,255,0.5); }
+.cell .p { font-size: 13.5px; font-weight: 800; line-height: 1.15; z-index: 2; margin-top: 3px; padding-right: 8px; }
+.cell .tgt { font-size: 9px; font-weight: 600; color: var(--gold); opacity: 0.8; line-height: 1.1; z-index: 2; margin-top: 2px; padding-right: 8px; }
 .cell.weekend { background: rgba(255,255,255,0.015); border-color: transparent; }
 .cell.weekend .d { opacity: 0.3; }
-.cell .closed { font-size: 8px; color: var(--text-faint); opacity: 0.5; text-transform: uppercase; letter-spacing: 0.03em; z-index: 2; }
+.cell .closed { font-size: 8px; color: var(--text-faint); opacity: 0.5; text-transform: uppercase; letter-spacing: 0.03em; z-index: 2; margin-top: 2px; }
 .cell.today { border-color: var(--gold); }
-.cell.today::after { content:''; position:absolute; bottom:4px; left:50%; transform:translateX(-50%); width:4px; height:4px; border-radius:50%; background: var(--gold); }
-.cell.today.filled::after, .cell.today.weekend::after { display:none; }
-.badge { position: absolute; top: 2px; right: 3px; width: 12px; height: 12px; z-index: 3; }
+.badge { position: absolute; top: 6px; right: 6px; width: 12px; height: 12px; z-index: 3; }
 .badge svg { width: 100%; height: 100%; }
-.note-dot { position: absolute; bottom: 4px; right: 4px; width: 4px; height: 4px; border-radius: 50%; background: var(--gold); z-index: 3; }
+.note-dot { position: absolute; bottom: 5px; right: 6px; width: 4px; height: 4px; border-radius: 50%; background: var(--gold); z-index: 3; }
 
 .kpi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 14px; }
 .kpi { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px 13px; }
@@ -480,8 +478,11 @@ async function renderMonth(){
     const showTarget = !has && isCurrentMonth && dayTargets[d] !== undefined;
     let content, cellStyle = '';
     if (has) {
-      content = `<span class="p">${fmtEUR(val)}</span>`;
-      cellStyle = ` style="background:${val>=0?'var(--green)':'var(--red)'}"`;
+      const intensity = 0.14 + 0.5 * (Math.abs(val)/maxAbsMonth);
+      const tint = val >= 0 ? `rgba(52,201,142,${intensity})` : `rgba(232,97,92,${intensity})`;
+      const textColor = val >= 0 ? '#5eeab0' : '#ff9d98';
+      content = `<span class="p" style="color:${textColor}">${fmtEUR(val)}</span>`;
+      cellStyle = ` style="background:${tint}"`;
     }
     else if (isWknd) content = `<span class="closed">Fermé</span>`;
     else if (showTarget) content = `<span class="tgt">~${fmtEURplain(dayTargets[d])}</span>`;
