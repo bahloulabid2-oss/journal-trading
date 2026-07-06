@@ -180,6 +180,20 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
 .btn-del { background: rgba(255,255,255,0.06); color: var(--text-dim); }
 .btn-cancel { background: transparent; color: var(--text-faint); }
 .loading { text-align: center; padding: 60px 0; color: var(--text-faint); font-size: 13px; }
+
+.lock-screen { position: fixed; inset: 0; background: var(--bg); z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; }
+.lock-title { font-family: 'Space Grotesk', sans-serif; font-size: 19px; font-weight: 600; margin-bottom: 6px; color: var(--text); }
+.lock-sub { font-size: 12.5px; color: var(--text-faint); margin-bottom: 30px; }
+.lock-dots { display: flex; gap: 16px; margin-bottom: 36px; }
+.lock-dot { width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid var(--text-faint); transition: background 0.1s; }
+.lock-dot.filled { background: var(--gold); border-color: var(--gold); }
+.lock-dots.shake { animation: shakex 0.4s; }
+.lock-dots.shake .lock-dot.filled { background: var(--red); border-color: var(--red); }
+@keyframes shakex { 10%,90%{transform:translateX(-2px);} 20%,80%{transform:translateX(4px);} 30%,50%,70%{transform:translateX(-8px);} 40%,60%{transform:translateX(8px);} }
+.lock-pad { display: grid; grid-template-columns: repeat(3, 68px); gap: 16px; }
+.lock-key { width: 68px; height: 68px; border-radius: 50%; background: var(--card); border: 1px solid var(--line); color: var(--text); font-size: 22px; font-family: 'IBM Plex Mono', monospace; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.lock-key:active { background: var(--card-hover); }
+.lock-key.empty { visibility: hidden; }
 </style>
 </head>
 <body>
@@ -310,6 +324,7 @@ function migrateData(obj){
 let lastExportAt = null;
 let firstUseAt = null;
 let drawdownThresholdPct = 15;
+let accessPin = null;
 
 async function loadSettings(){
   const v = lsGet('settings');
@@ -320,11 +335,12 @@ async function loadSettings(){
     lastExportAt = s.lastExportAt ?? null;
     firstUseAt = s.firstUseAt ?? null;
     drawdownThresholdPct = s.drawdownThresholdPct ?? 15;
+    accessPin = s.accessPin ?? null;
     return true;
   }
   return false;
 }
-async function saveSettings(){ lsSet('settings', JSON.stringify({startingCapital, forecastTargetPct, lastExportAt, firstUseAt, drawdownThresholdPct})); }
+async function saveSettings(){ lsSet('settings', JSON.stringify({startingCapital, forecastTargetPct, lastExportAt, firstUseAt, drawdownThresholdPct, accessPin})); }
 async function loadMonth(y, m){
   const v = lsGet(monthKey(y, m));
   return v ? migrateData(JSON.parse(v)) : {};
@@ -660,6 +676,15 @@ async function renderSettingsPage(){
         <button class="settings-btn" onclick="editDrawdownThreshold()">${drawdownThresholdPct}%</button>
       </div>
     </div>
+    <div class="settings-card">
+      <div class="settings-row">
+        <div>
+          <div class="settings-label">Code d'accès</div>
+          <div class="settings-sub2">${accessPin ? "Verrouillage activé à l'ouverture" : "Protège l'appli par un code à 4 chiffres"}</div>
+        </div>
+        <button class="settings-btn" onclick="${accessPin ? 'disablePin()' : 'enablePin()'}">${accessPin ? 'Désactiver' : 'Activer'}</button>
+      </div>
+    </div>
     <div class="section-label" style="margin-top:18px">Données</div>
     <button class="export-btn" onclick="exportCSV()">${ICONS.download} Exporter tout en CSV</button>
     <div style="font-size:11.5px;color:${daysSinceBackup()>=30?'#ff9d98':'var(--text-faint)'};margin-top:10px">${lastExportAt ? `Dernière sauvegarde : il y a ${daysSinceBackup()} jour${daysSinceBackup()>1?'s':''}` : `Aucune sauvegarde exportée pour l'instant`}</div>
@@ -805,6 +830,15 @@ function editCapital(){
 document.getElementById('settingsCancel').onclick = ()=> document.getElementById('settingsOverlay').classList.remove('show');
 document.getElementById('settingsOverlay').addEventListener('click', (e)=>{ if (e.target.id === 'settingsOverlay') e.target.classList.remove('show'); });
 document.getElementById('settingsSave').onclick = async ()=>{
+  if (settingsField === 'accessPinSet') {
+    const pinRaw = document.getElementById('settingsInput').value.replace(/\D/g,'');
+    if (!/^\d{4}$/.test(pinRaw)) return;
+    accessPin = pinRaw;
+    await saveSettings();
+    document.getElementById('settingsOverlay').classList.remove('show');
+    render();
+    return;
+  }
   const raw = document.getElementById('settingsInput').value.replace(',', '.').replace(/\s/g,'');
   const n = parseFloat(raw);
   if (isNaN(n) || n < 0) return;
@@ -899,6 +933,59 @@ async function exportCSV(){
 
 function isCurrentMonthJuly2026(){ return viewYear === 2026 && viewMonth === 6; }
 
+let pinBuffer = '';
+function buildLockScreen(){
+  const wrap = document.createElement('div');
+  wrap.innerHTML = `<div class="lock-screen" id="lockScreen">
+    <div class="lock-title">Journal de trading</div>
+    <div class="lock-sub">Entre ton code à 4 chiffres</div>
+    <div class="lock-dots" id="lockDots">${[0,1,2,3].map(()=>'<div class="lock-dot"></div>').join('')}</div>
+    <div class="lock-pad">
+      ${[1,2,3,4,5,6,7,8,9].map(n=>`<button class="lock-key" onclick="pinPress(${n})">${n}</button>`).join('')}
+      <div class="lock-key empty"></div>
+      <button class="lock-key" onclick="pinPress(0)">0</button>
+      <button class="lock-key" onclick="pinBackspace()">⌫</button>
+    </div>
+  </div>`;
+  document.body.appendChild(wrap.firstElementChild);
+}
+function updateLockDots(){
+  document.querySelectorAll('#lockDots .lock-dot').forEach((d,i)=> d.classList.toggle('filled', i < pinBuffer.length));
+}
+function pinPress(n){
+  if (pinBuffer.length >= 4) return;
+  pinBuffer += n;
+  updateLockDots();
+  if (pinBuffer.length === 4) checkPin();
+}
+function pinBackspace(){ pinBuffer = pinBuffer.slice(0,-1); updateLockDots(); }
+function checkPin(){
+  if (pinBuffer === accessPin) {
+    const el = document.getElementById('lockScreen');
+    if (el) el.remove();
+    render();
+  } else {
+    const dotsEl = document.getElementById('lockDots');
+    dotsEl.classList.add('shake');
+    setTimeout(()=>{ dotsEl.classList.remove('shake'); pinBuffer=''; updateLockDots(); }, 400);
+  }
+}
+
+function enablePin(){
+  settingsField = 'accessPinSet';
+  document.getElementById('settingsTitle').textContent = "Créer un code d'accès";
+  document.getElementById('settingsSub').textContent = 'Choisis un code à 4 chiffres';
+  document.getElementById('settingsInput').value = '';
+  document.getElementById('settingsInput').setAttribute('inputmode', 'numeric');
+  document.getElementById('settingsOverlay').classList.add('show');
+  setTimeout(()=>document.getElementById('settingsInput').focus(), 50);
+}
+async function disablePin(){
+  accessPin = null;
+  await saveSettings();
+  render();
+}
+
 (async function init(){
   const hadSettings = await loadSettings();
   if (!hadSettings) { startingCapital = 300; forecastTargetPct = 2; firstUseAt = Date.now(); await saveSettings(); }
@@ -908,7 +995,7 @@ function isCurrentMonthJuly2026(){ return viewYear === 2026 && viewMonth === 6; 
     monthData = { "2": {pnl: 4.92, note: ''}, "3": {pnl: -7.61, note: ''} };
     await saveMonth();
   }
-  render();
+  if (accessPin) { buildLockScreen(); } else { render(); }
 })();
 </script>
 </body>
