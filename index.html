@@ -110,8 +110,13 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
 /* ---------- Capital hero ---------- */
 .capital-card { background: radial-gradient(130% 150% at 0% 0%, #221b0b 0%, var(--card) 55%); border: 1px solid rgba(224,176,90,0.3); border-radius: var(--r-lg); padding: 20px 20px 8px; margin-bottom: 12px; position: relative; overflow: hidden; box-shadow: var(--shadow-card), inset 0 1px 0 rgba(255,255,255,0.04); }
 .capital-card::before { content: ''; position: absolute; top: 0; left: 10%; right: 10%; height: 1px; background: linear-gradient(90deg, transparent, rgba(240,202,126,0.8), transparent); }
-.capital-card .edit-cap { position: absolute; top: 16px; right: 18px; background: none; border: none; color: var(--text-faint); cursor: pointer; font-size: 11.5px; font-weight: 500; z-index: 2; transition: color 0.15s; }
+.capital-card .edit-cap { background: none; border: none; color: var(--text-faint); cursor: pointer; font-size: 11.5px; font-weight: 500; transition: color 0.15s; }
 .capital-card .edit-cap:hover { color: var(--gold); }
+.cap-actions { position: absolute; top: 14px; right: 16px; display: flex; align-items: center; gap: 10px; z-index: 2; }
+.eye-btn { background: none; border: none; color: var(--text-faint); cursor: pointer; width: 22px; height: 22px; padding: 0; display: flex; align-items: center; justify-content: center; transition: color 0.15s; }
+.eye-btn svg { width: 18px; height: 18px; }
+.eye-btn:hover { color: var(--gold); }
+.cap-value.hidden-val { letter-spacing: 0.1em; opacity: 0.7; }
 .cap-label { font-size: 10.5px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 0.11em; margin-bottom: 8px; }
 .cap-value { font-family: 'IBM Plex Mono', monospace; font-size: 34px; font-weight: 700; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; background: linear-gradient(160deg, #fdf3dd 0%, #f0ca7e 40%, #c99b45 85%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 1px 8px rgba(224,176,90,0.18)); }
 .cap-sub { font-size: 12px; color: var(--text-dim); margin-top: 5px; font-family: 'IBM Plex Mono', monospace; margin-bottom: 16px; }
@@ -266,6 +271,127 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
 .lock-key { width: 70px; height: 70px; border-radius: 50%; background: var(--card); border: 1px solid var(--line); color: var(--text); font-size: 23px; font-weight: 500; font-family: 'IBM Plex Mono', monospace; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.1s, transform 0.1s; }
 .lock-key:active { background: var(--card-hover); transform: scale(0.92); }
 .lock-key.empty { visibility: hidden; }
+
+/* ---------- Chips (streak + level) ---------- */
+.chip-row { display: flex; gap: 9px; margin-bottom: 12px; }
+.chip { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; background: var(--card); border: 1px solid var(--line); border-radius: var(--r-md); padding: 12px 10px; font-size: 12px; color: var(--text-dim); box-shadow: var(--shadow-card); }
+.chip svg { width: 16px; height: 16px; flex-shrink: 0; }
+.chip b { color: var(--text); font-weight: 700; }
+.chip.streak svg { color: var(--text-faint); }
+.chip.streak.lit svg { color: #ff9d4d; filter: drop-shadow(0 0 5px rgba(255,157,77,0.5)); }
+.chip.level { border-color: color-mix(in srgb, var(--lvl) 35%, transparent); }
+.chip.level svg { color: var(--lvl); }
+.chip.level b { color: var(--lvl); }
+
+/* ---------- Insights (coach) ---------- */
+.insight-card { background: linear-gradient(160deg, rgba(224,176,90,0.06), var(--card) 45%); border: 1px solid rgba(224,176,90,0.2); border-radius: var(--r-md); padding: 15px 17px; margin-bottom: 12px; box-shadow: var(--shadow-card); }
+.insight-head { display: flex; align-items: center; gap: 7px; font-size: 10.5px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px; }
+.insight-head svg { width: 14px; height: 14px; }
+.insight-line { font-size: 12.5px; color: var(--text-dim); line-height: 1.55; padding: 7px 0; border-top: 1px solid var(--line); }
+.insight-line:first-of-type { border-top: none; padding-top: 0; }
+.insight-line.warn { color: #ffb3ae; }
+
+/* ---------- Mood picker ---------- */
+.mood-row { display: flex; gap: 7px; margin-bottom: 13px; }
+.mood-row button { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; background: rgba(255,255,255,0.03); border: 1px solid var(--line); border-radius: 11px; padding: 9px 4px; cursor: pointer; font-size: 19px; transition: all 0.15s; }
+.mood-row button span { font-size: 9.5px; font-weight: 600; color: var(--text-faint); }
+.mood-row button.active { background: var(--gold-dim); border-color: rgba(224,176,90,0.5); }
+.mood-row button.active span { color: var(--gold); }
+
+/* ---------- Records ---------- */
+.level-card { background: radial-gradient(130% 150% at 50% -20%, rgba(224,176,90,0.1) 0%, var(--card) 55%); border: 1px solid var(--line-strong); border-radius: var(--r-lg); padding: 24px 18px 20px; margin-bottom: 16px; text-align: center; box-shadow: var(--shadow-card); }
+.level-badge { width: 58px; height: 58px; margin: 0 auto 12px; border-radius: 50%; background: color-mix(in srgb, var(--lvl) 14%, transparent); border: 1.5px solid color-mix(in srgb, var(--lvl) 55%, transparent); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 24px color-mix(in srgb, var(--lvl) 25%, transparent); }
+.level-badge svg { width: 26px; height: 26px; color: var(--lvl); }
+.level-name { font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 600; margin-bottom: 5px; }
+.level-hint { font-size: 11.5px; color: var(--text-faint); line-height: 1.5; margin-bottom: 16px; }
+.lvl-ladder { display: flex; align-items: center; justify-content: center; gap: 5px; flex-wrap: wrap; }
+.lvl-step { display: flex; align-items: center; gap: 5px; font-size: 10px; font-weight: 600; color: var(--text-faint); }
+.lvl-step.done { color: var(--text-dim); }
+.lvl-step.now { color: var(--lvl); }
+.lvl-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; opacity: 0.5; }
+.lvl-step.now .lvl-dot { opacity: 1; box-shadow: 0 0 8px currentColor; }
+.lvl-arrow { font-size: 9px; color: var(--text-faint); opacity: 0.5; }
+.record-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 9px; }
+.record { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-md); padding: 15px 14px; box-shadow: var(--shadow-card); }
+.rec-icon { font-size: 20px; margin-bottom: 8px; }
+.rec-label { font-size: 10px; font-weight: 600; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 5px; }
+.rec-val { font-family: 'IBM Plex Mono', monospace; font-size: 16px; font-weight: 700; }
+.rec-val.pos { color: var(--green); } .rec-val.neg { color: var(--red); }
+.rec-sub { font-size: 10.5px; color: var(--text-faint); margin-top: 3px; min-height: 13px; }
+
+/* ---------- Weekly report ---------- */
+.week-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-md); padding: 14px 17px; margin-bottom: 9px; box-shadow: var(--shadow-card); }
+.wk-head { display: flex; justify-content: space-between; align-items: baseline; font-size: 12px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.06em; }
+.wk-total { font-family: 'IBM Plex Mono', monospace; font-size: 17px; letter-spacing: -0.01em; text-transform: none; }
+.wk-total.pos { color: var(--green); } .wk-total.neg { color: var(--red); }
+.wk-empty { font-size: 11.5px; color: var(--text-faint); font-weight: 500; text-transform: none; letter-spacing: 0; }
+.wk-row { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding-top: 8px; margin-top: 8px; border-top: 1px solid var(--line); }
+.wk-row b { font-family: 'IBM Plex Mono', monospace; font-weight: 600; color: var(--text); }
+
+/* ---------- Projections ---------- */
+.proj-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
+.proj { background: rgba(255,255,255,0.025); border: 1px solid var(--line); border-radius: 11px; padding: 11px 8px; text-align: center; }
+.proj-h { font-size: 9.5px; font-weight: 600; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+.proj-v { font-family: 'IBM Plex Mono', monospace; font-size: 13.5px; font-weight: 700; color: var(--gold); }
+.forecast-pills button { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.forecast-pills button small { font-size: 9.5px; opacity: 0.65; font-family: 'IBM Plex Mono', monospace; }
+
+/* ---------- Quote ---------- */
+.quote { font-size: 12.5px; color: var(--text-dim); font-style: italic; text-align: center; padding: 2px 14px 12px; line-height: 1.5; opacity: 0.9; }
+
+/* ---------- End of day ---------- */
+.eod { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 12px; font-weight: 600; color: var(--text-dim); }
+
+/* ---------- Milestones ---------- */
+.milestone-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-md); padding: 15px 17px; margin-bottom: 12px; box-shadow: var(--shadow-card); }
+.ms-head { display: flex; justify-content: space-between; align-items: baseline; font-size: 11px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; }
+.ms-target { font-family: 'IBM Plex Mono', monospace; font-size: 15px; color: var(--gold); text-transform: none; letter-spacing: -0.01em; }
+.ms-sub { font-size: 11px; color: var(--text-faint); font-family: 'IBM Plex Mono', monospace; }
+.ms-eta { font-size: 11.5px; color: var(--text-dim); margin-top: 7px; }
+.ms-done { font-size: 13px; color: var(--gold); font-weight: 600; margin-top: 8px; }
+.ms-ladder { display: flex; align-items: center; gap: 6px; margin-top: 12px; flex-wrap: wrap; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; }
+.ms-tier { color: var(--text-faint); }
+.ms-tier.done { color: var(--green); }
+.ms-tier.next { color: var(--gold); font-weight: 700; }
+.ms-sep { color: var(--text-faint); opacity: 0.4; font-size: 9px; }
+
+/* ---------- Simulator ---------- */
+.sim-intro { font-size: 12.5px; color: var(--text-dim); line-height: 1.55; margin-bottom: 14px; padding: 0 2px; }
+.sim-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-md); padding: 6px 17px; margin-bottom: 12px; box-shadow: var(--shadow-card); }
+.sim-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 13px 0; border-top: 1px solid var(--line); }
+.sim-row:first-child { border-top: none; }
+.sim-label { font-size: 12.5px; font-weight: 600; color: var(--text-dim); }
+.stepper { display: flex; align-items: center; gap: 2px; background: rgba(255,255,255,0.03); border: 1px solid var(--line); border-radius: 10px; padding: 3px; }
+.stepper button { width: 30px; height: 30px; background: transparent; border: none; color: var(--gold); font-size: 17px; cursor: pointer; border-radius: 8px; }
+.stepper button:active { background: var(--gold-dim); }
+.stepper span { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 700; min-width: 62px; text-align: center; }
+.pill-group { display: flex; gap: 5px; }
+.pill-group button { background: rgba(255,255,255,0.03); border: 1px solid var(--line); color: var(--text-dim); padding: 7px 11px; border-radius: 9px; font-size: 12px; font-weight: 600; cursor: pointer; font-family: 'IBM Plex Mono', monospace; }
+.pill-group button.active { background: var(--gold-dim); color: var(--gold); border-color: rgba(224,176,90,0.4); }
+.sim-result { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-md); padding: 18px 17px 14px; margin-bottom: 10px; text-align: center; box-shadow: var(--shadow-card); }
+.sim-final { font-family: 'IBM Plex Mono', monospace; font-size: 30px; font-weight: 700; letter-spacing: -0.02em; }
+.sim-final.pos { color: var(--green); } .sim-final.neg { color: var(--red); }
+.sim-growth { font-size: 12px; color: var(--text-dim); margin: 4px 0 12px; font-family: 'IBM Plex Mono', monospace; }
+
+/* ---------- Toast ---------- */
+.toast { position: fixed; left: 50%; bottom: max(90px, calc(env(safe-area-inset-bottom) + 70px)); transform: translateX(-50%) translateY(16px); width: calc(100% - 44px); max-width: 430px; background: var(--card-raised); border: 1px solid var(--line-strong); border-radius: 14px; padding: 13px 16px; font-size: 12.5px; line-height: 1.5; color: var(--text); box-shadow: 0 12px 36px rgba(0,0,0,0.6); opacity: 0; transition: opacity 0.35s, transform 0.35s cubic-bezier(.22,.9,.35,1); z-index: 90; }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast.ok { border-color: rgba(61,220,151,0.45); }
+.toast.warn { border-color: rgba(240,101,95,0.45); }
+
+/* ---------- Celebration ---------- */
+.celebrate { position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); z-index: 95; display: flex; align-items: center; justify-content: center; padding: 24px; }
+.cel-inner { text-align: center; position: relative; animation: fadeUp 0.4s cubic-bezier(.22,.9,.35,1) both; }
+.cel-burst { position: absolute; top: 8px; left: 50%; width: 0; height: 0; }
+.cel-burst i { position: absolute; width: 5px; height: 12px; border-radius: 3px; background: linear-gradient(180deg, #f0ca7e, #b9862f); transform-origin: center; animation: burst 0.9s var(--d) cubic-bezier(.2,.7,.3,1) both; }
+@keyframes burst { 0% { transform: rotate(var(--a)) translateY(0) scale(0.4); opacity: 1; } 100% { transform: rotate(var(--a)) translateY(-92px) scale(1); opacity: 0; } }
+.cel-icon { font-size: 46px; margin-bottom: 12px; }
+.cel-title { font-family: 'Space Grotesk', sans-serif; font-size: 21px; font-weight: 600; background: linear-gradient(160deg, #fdf3dd, #f0ca7e 45%, #c99b45); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 7px; }
+.cel-sub { font-size: 13px; color: var(--text-dim); margin-bottom: 20px; }
+
+/* ---------- Career scene ---------- */
+.career-scene { margin: -6px -4px 14px; }
+.career-cap { font-size: 10.5px; color: var(--text-faint); margin-top: 4px; }
 </style>
 </head>
 <body>
@@ -335,6 +461,7 @@ const ICONS = {
   grid: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>',
   calendar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>',
   chart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>',
+  sliders: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 8h9M17 8h3M4 16h3M11 16h9"/><circle cx="15" cy="8" r="2.2"/><circle cx="9" cy="16" r="2.2"/></svg>',
   trophy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M7 6H4a2 2 0 0 0 2 4h1M17 6h3a2 2 0 0 1-2 4h-1"/></svg>',
   spark: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15z"/></svg>',
   flame2: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3s4 3.5 4 7.5a4 4 0 0 1-8 0c0-1 .3-1.8.8-2.6C9.3 9.5 9 11 9 12a3 3 0 0 0 6 0c0-3.5-3-6-3-9z"/><path d="M7 15a5 5 0 0 0 10 0c0-1.5-.5-2.8-1.3-4"/></svg>',
@@ -356,7 +483,43 @@ let viewMode = 'month';
 let currentPage = 'dashboard';
 let startingCapital = 300;
 let forecastTargetPct = 2;
-let forecastHorizonDays = 126;
+let forecastScenario = 'realiste';
+let simPct = 1;
+let simLossDays = 1;
+let simLossPct = 1;
+let simHorizon = 126;
+
+const QUOTES = [
+  "Ne cherche pas à gagner. Cherche à respecter ton plan.",
+  "Le marché sera encore là demain. Ton capital doit l'être aussi.",
+  "Une petite perte acceptée vaut mieux qu'une grande perte espérée.",
+  "La régularité bat l'intensité, tous les mois de l'année.",
+  "Ton pire ennemi n'est pas le marché, c'est l'envie de te refaire.",
+  "Protéger ton capital, c'est déjà gagner.",
+  "Un jour sans trade est parfois ton meilleur trade.",
+  "La discipline se voit dans les jours perdants, pas dans les gagnants.",
+  "Ne confonds pas une bonne journée avec une bonne stratégie.",
+  "Le drawdown se creuse en silence. Surveille-le avant qu'il parle.",
+  "Trader fatigué, c'est trader contre soi-même.",
+  "Ta série de gains ne te doit rien. Reste humble.",
+  "Chaque euro préservé aujourd'hui compose pour demain.",
+  "Le plan décide, pas l'émotion.",
+  "Note tout. Ta mémoire embellit les gains et efface les pertes.",
+  "Arrêter à l'objectif, c'est une compétence, pas une faiblesse.",
+  "Le levier amplifie tout — surtout les erreurs.",
+  "Tu ne contrôles pas le marché. Tu contrôles ta taille de position.",
+  "Trois pertes d'affilée : le signal de ralentir, pas d'accélérer.",
+  "La patience paie des intérêts composés."
+];
+function dailyQuote(){
+  const start = new Date(today.getFullYear(), 0, 0);
+  const doy = Math.floor((today - start) / 86400000);
+  return QUOTES[doy % QUOTES.length];
+}
+
+const TIERS = [500, 1000, 2500, 5000, 10000];
+function getUnlockedTiers(){ try { return JSON.parse(lsGet('unlockedTiers') || '[]'); } catch(e){ return []; } }
+function saveUnlockedTiers(t){ lsSet('unlockedTiers', JSON.stringify(t)); }
 let monthData = {};
 let sign = 'gain';
 
@@ -364,10 +527,11 @@ const PAGES = [
   { id: 'dashboard', label: 'Dashboard', icon: 'grid' },
   { id: 'journal', label: 'Journal', icon: 'calendar' },
   { id: 'stats', label: 'Statistiques', icon: 'chart' },
+  { id: 'simulator', label: 'Simulateur', icon: 'sliders' },
   { id: 'records', label: 'Records', icon: 'trophy' },
   { id: 'settings', label: 'Réglages', icon: 'gear' }
 ];
-const PAGE_TITLES = { dashboard: 'Journal de trading', journal: 'Journal', stats: 'Statistiques', records: 'Records', settings: 'Réglages' };
+const PAGE_TITLES = { dashboard: 'Journal de trading', journal: 'Journal', stats: 'Statistiques', simulator: 'Simulateur', records: 'Records', settings: 'Réglages' };
 
 function renderDrawer(){
   document.getElementById('drawer').innerHTML = `
@@ -493,6 +657,187 @@ async function computeAllTimeDrawdown(){
   return { currentCapital: cum, peak, ddPct };
 }
 
+
+async function getAllEntriesChrono(){
+  const keys = lsListPrefix('month:').map(k=>{const p=k.replace('month:','').split('-');return{k,y:+p[0],m:+p[1]-1};}).sort((a,b)=>a.y-b.y||a.m-b.m);
+  const out = [];
+  for (const {k,y,m} of keys) {
+    const v = lsGet(k); if (!v) continue;
+    const data = migrateData(JSON.parse(v));
+    const days = Object.keys(data).map(Number).sort((a,b)=>a-b);
+    for (const d of days) out.push({ y, m, d, ...data[d] });
+  }
+  return out;
+}
+
+async function computeDisciplineStreak(){
+  const cache = {};
+  const getM = async (y,m) => { const k=y+'-'+m; if(!(k in cache)) cache[k]=await loadMonth(y,m); return cache[k]; };
+  const isWk = dt => { const w = dt.getDay(); return w !== 0 && w !== 6; };
+  let d = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  const todayData = await getM(d.getFullYear(), d.getMonth());
+  if (isWk(d) && todayData[d.getDate()] === undefined) d.setDate(d.getDate()-1);
+  let streak = 0;
+  for (let i = 0; i < 730; i++) {
+    if (!isWk(d)) { d.setDate(d.getDate()-1); continue; }
+    const data = await getM(d.getFullYear(), d.getMonth());
+    if (data[d.getDate()] !== undefined) { streak++; d.setDate(d.getDate()-1); }
+    else break;
+  }
+  return streak;
+}
+
+async function computeRecords(){
+  const entries = await getAllEntriesChrono();
+  let bestDay=null, worstDay=null, longestWin=0, curWin=0, cum=startingCapital, peak=startingCapital, maxDDeur=0;
+  let wins=0, sumG=0, sumL=0;
+  const byMonth = {};
+  for (const e of entries) {
+    const mk = e.y+'-'+e.m;
+    byMonth[mk] = (byMonth[mk]||0) + e.pnl;
+    if (e.pnl > 0) { wins++; sumG += e.pnl; curWin++; if (curWin > longestWin) longestWin = curWin; }
+    else { sumL += Math.abs(e.pnl); curWin = 0; }
+    if (!bestDay || e.pnl > bestDay.pnl) bestDay = e;
+    if (!worstDay || e.pnl < worstDay.pnl) worstDay = e;
+    cum += e.pnl; if (cum > peak) peak = cum;
+    const dd = peak - cum; if (dd > maxDDeur) maxDDeur = dd;
+  }
+  let bestMonth = null;
+  for (const mk in byMonth) {
+    if (!bestMonth || byMonth[mk] > bestMonth.total) {
+      const [y,m] = mk.split('-').map(Number);
+      bestMonth = { total: byMonth[mk], y, m };
+    }
+  }
+  const n = entries.length;
+  return {
+    entries, bestDay, worstDay, bestMonth, longestWin, maxDDeur,
+    daysTraded: n,
+    winRate: n ? Math.round(wins/n*100) : 0,
+    profitFactor: sumL > 0 ? sumG/sumL : (sumG > 0 ? Infinity : 0)
+  };
+}
+
+const LEVELS = [
+  { name: 'Bronze', color: '#c88a5a', min: d => true },
+  { name: 'Argent', color: '#b9c2cc', min: d => d.daysTraded >= 10 && d.streak >= 3 },
+  { name: 'Gold',   color: '#e0b05a', min: d => d.daysTraded >= 30 && d.profitFactor >= 1.2 && d.winRate >= 50 },
+  { name: 'Elite',  color: '#7dd3fc', min: d => d.daysTraded >= 75 && d.profitFactor >= 1.5 && d.winRate >= 55 },
+  { name: 'Legend', color: '#c084fc', min: d => d.daysTraded >= 150 && d.profitFactor >= 1.8 && d.winRate >= 60 }
+];
+function computeLevel(rec, streak){
+  const d = { ...rec, streak };
+  let lvl = 0;
+  for (let i = 0; i < LEVELS.length; i++) if (LEVELS[i].min(d)) lvl = i;
+  const next = LEVELS[lvl+1] || null;
+  let nextHint = '';
+  if (next) {
+    const needs = [];
+    if (lvl === 0) { if (d.daysTraded < 10) needs.push((10-d.daysTraded)+' jours tradés'); if (d.streak < 3) needs.push('série de 3 jours'); }
+    if (lvl === 1) { if (d.daysTraded < 30) needs.push((30-d.daysTraded)+' jours tradés'); if (d.profitFactor < 1.2) needs.push('PF ≥ 1.2'); if (d.winRate < 50) needs.push('WR ≥ 50%'); }
+    if (lvl === 2) { if (d.daysTraded < 75) needs.push((75-d.daysTraded)+' jours tradés'); if (d.profitFactor < 1.5) needs.push('PF ≥ 1.5'); if (d.winRate < 55) needs.push('WR ≥ 55%'); }
+    if (lvl === 3) { if (d.daysTraded < 150) needs.push((150-d.daysTraded)+' jours tradés'); if (d.profitFactor < 1.8) needs.push('PF ≥ 1.8'); if (d.winRate < 60) needs.push('WR ≥ 60%'); }
+    nextHint = needs.length ? `Prochain : ${next.name} — il te manque ${needs.join(', ')}` : `Prochain : ${next.name}`;
+  } else nextHint = 'Niveau maximum atteint';
+  return { ...LEVELS[lvl], index: lvl, nextHint };
+}
+
+const WEEKDAY_NAMES = ['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
+async function generateInsights(todayInfo){
+  const rec = await computeRecords();
+  const entries = rec.entries;
+  const insights = [];
+
+  if (todayInfo.entry && todayInfo.todayTarget > 0) {
+    const diff = ((todayInfo.entry.pnl - todayInfo.todayTarget) / todayInfo.todayTarget) * 100;
+    if (todayInfo.entry.pnl > 0 && diff >= 0) insights.push({ p: 1, t: `Aujourd'hui : ${fmtEUR(todayInfo.entry.pnl)}, soit ${Math.round(diff)}% au-dessus de ton objectif du jour.` });
+    else if (todayInfo.entry.pnl > 0) insights.push({ p: 2, t: `Aujourd'hui : ${fmtEUR(todayInfo.entry.pnl)}, à ${Math.abs(Math.round(diff))}% de ton objectif du jour.` });
+  }
+
+  let tail = 0, tailSign = 0;
+  for (let i = entries.length-1; i >= 0; i--) {
+    const s = entries[i].pnl >= 0 ? 1 : -1;
+    if (tail === 0) { tail = 1; tailSign = s; }
+    else if (s === tailSign) tail++;
+    else break;
+  }
+  if (tail >= 3 && tailSign > 0) insights.push({ p: 1, t: `${tail} journées positives d'affilée — belle régularité.` });
+  if (tail >= 3 && tailSign < 0) insights.push({ p: 0, t: `${tail} pertes consécutives. Historiquement, réduire la taille des positions après une série de pertes limite les dégâts — surtout avec un bot martingale.` });
+
+  if (entries.length >= 8) {
+    let occ = 0, nextWins = 0;
+    for (let i = 3; i < entries.length; i++) {
+      if (entries[i-1].pnl > 0 && entries[i-2].pnl > 0 && entries[i-3].pnl > 0) {
+        occ++; if (entries[i].pnl > 0) nextWins++;
+      }
+    }
+    if (occ >= 4) {
+      const r = Math.round(nextWins/occ*100);
+      insights.push({ p: 3, t: `Après 3 journées gagnantes, ta journée suivante est positive dans ${r}% des cas (${occ} occurrences).` });
+    }
+  }
+
+  const moodStats = {};
+  for (const e of entries) if (e.mood) {
+    moodStats[e.mood] = moodStats[e.mood] || { n: 0, losses: 0 };
+    moodStats[e.mood].n++;
+    if (e.pnl < 0) moodStats[e.mood].losses++;
+  }
+  for (const m in moodStats) {
+    const s = moodStats[m];
+    if (s.n >= 4) {
+      const lr = Math.round(s.losses/s.n*100);
+      if (lr >= 60) insights.push({ p: 0, t: `Tu perds ${lr}% du temps quand tu trades en étant ${MOOD_LABELS[m].split(' ')[1].toLowerCase()} (${s.n} journées).` });
+    }
+  }
+
+  const wd = {};
+  for (const e of entries) {
+    const w = new Date(e.y, e.m, e.d).getDay();
+    wd[w] = wd[w] || { n: 0, sum: 0 };
+    wd[w].n++; wd[w].sum += e.pnl;
+  }
+  let bestW = null, worstW = null;
+  for (const w in wd) {
+    if (wd[w].n < 3) continue;
+    const avg = wd[w].sum/wd[w].n;
+    if (!bestW || avg > bestW.avg) bestW = { w, avg };
+    if (!worstW || avg < worstW.avg) worstW = { w, avg };
+  }
+  if (bestW && worstW && bestW.w !== worstW.w && worstW.avg < 0) {
+    insights.push({ p: 2, t: `Ton meilleur jour est le ${WEEKDAY_NAMES[bestW.w]} (${fmtEUR(bestW.avg)}/j en moyenne), ton pire le ${WEEKDAY_NAMES[worstW.w]} (${fmtEUR(worstW.avg)}/j).` });
+  }
+
+  insights.sort((a,b) => a.p - b.p);
+  return insights.slice(0, 3);
+}
+
+function mondayOf(dt){
+  const d = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate());
+  const shift = (d.getDay() + 6) % 7;
+  d.setDate(d.getDate() - shift);
+  return d;
+}
+async function computeWeekSummary(monday){
+  const cache = {};
+  const getM = async (y,m) => { const k=y+'-'+m; if(!(k in cache)) cache[k]=await loadMonth(y,m); return cache[k]; };
+  const days = [];
+  for (let i = 0; i < 5; i++) {
+    const d = new Date(monday); d.setDate(d.getDate()+i);
+    const data = await getM(d.getFullYear(), d.getMonth());
+    const e = data[d.getDate()];
+    if (e !== undefined) days.push({ w: d.getDay(), pnl: e.pnl });
+  }
+  const total = days.reduce((a,b)=>a+b.pnl,0);
+  const wins = days.filter(d=>d.pnl>0).length;
+  let best = null, worst = null;
+  for (const d of days) {
+    if (!best || d.pnl > best.pnl) best = d;
+    if (!worst || d.pnl < worst.pnl) worst = d;
+  }
+  return { total, count: days.length, winRate: days.length ? Math.round(wins/days.length*100) : 0, best, worst };
+}
+
 function drawdownBannerHTML(dd){
   if (dd.ddPct < drawdownThresholdPct) return '';
   return `<div class="dd-banner" onclick="setPage('settings')">
@@ -562,13 +907,26 @@ function renderCurve(curve){
   </svg>`;
 }
 
+let hideCapital = false;
+function toggleHideCapital(){ hideCapital = !hideCapital; lsSet('hideCapital', hideCapital ? '1' : '0'); render(); }
+
 function capitalCardHTML(currentCapital, allTimeTotal, roi, kpi){
+  const eyeIcon = hideCapital
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 3l18 18M10.5 5.2A9.8 9.8 0 0 1 12 5c5 0 9 4.5 10 7-.35.86-1.06 2-2.1 3.1M6.3 6.5C4 8 2.5 10.2 2 12c1 2.5 5 7 10 7 1.4 0 2.7-.3 3.9-.9"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M2 12c1-2.5 5-7 10-7s9 4.5 10 7c-1 2.5-5 7-10 7S3 14.5 2 12z"/><circle cx="12" cy="12" r="3"/></svg>';
+  const capDisplay = hideCapital ? '••••• €' : fmtEURplain(currentCapital);
+  const subDisplay = hideCapital
+    ? `<span class="${allTimeTotal>=0?'pos':'neg'}">${roi>=0?'+':''}${roi.toFixed(2)}%</span> depuis le départ`
+    : `<span class="${allTimeTotal>=0?'pos':'neg'}">${fmtEUR(allTimeTotal)}</span> · ${roi>=0?'+':''}${roi.toFixed(2)}% depuis le départ (${fmtEURplain(startingCapital)})`;
   return `
     <div class="capital-card fade-in">
-      <button class="edit-cap" onclick="editCapital()">Modifier</button>
+      <div class="cap-actions">
+        <button class="eye-btn" onclick="toggleHideCapital()" aria-label="${hideCapital?'Afficher':'Masquer'} le capital">${eyeIcon}</button>
+        <button class="edit-cap" onclick="editCapital()">Modifier</button>
+      </div>
       <div class="cap-label">Capital actuel</div>
-      <div class="cap-value">${fmtEURplain(currentCapital)}</div>
-      <div class="cap-sub"><span class="${allTimeTotal>=0?'pos':'neg'}">${fmtEUR(allTimeTotal)}</span> · ${roi>=0?'+':''}${roi.toFixed(2)}% depuis le départ (${fmtEURplain(startingCapital)})</div>
+      <div class="cap-value ${hideCapital?'hidden-val':''}">${capDisplay}</div>
+      <div class="cap-sub">${subDisplay}</div>
       <div class="cap-curve-title">Courbe de capital — ${MONTHS_FR[viewMonth]} <span style="color:${kpi.total>=0?'var(--green)':'var(--red)'}">${fmtEUR(kpi.total)}</span></div>
       ${renderCurve(kpi.curve)}
     </div>
@@ -607,11 +965,13 @@ function kpiGridHTML(kpi, compact){
   const pfDisplay = kpi.profitFactor === null ? '∞' : kpi.profitFactor.toFixed(2);
   const streakLabel = kpi.streak > 0 ? `${kpi.streak} jour${kpi.streak>1?'s':''} ${kpi.streakSign>0?'gagnants':'perdants'}` : 'aucune donnée';
   if (compact) {
+    const wr = Math.round(kpi.winRateFrac*100);
     return `
-    <div class="kpi-grid compact">
-      <div class="kpi"><div class="kpi-top">${ICONS.scale}<span class="kpi-label">Profit factor</span></div><div class="kpi-val ${kpi.profitFactor!==null && kpi.profitFactor>=1?'pos':(kpi.profitFactor!==null?'neg':'')}">${kpi.vals.length?pfDisplay:'—'}</div></div>
-      <div class="kpi"><div class="kpi-top">${ICONS.target}<span class="kpi-label">Espérance</span></div><div class="kpi-val ${kpi.expectancy>=0?'pos':'neg'}">${kpi.vals.length?fmtEUR(kpi.expectancy):'—'}</div></div>
-      <div class="kpi"><div class="kpi-top">${ICONS.waves}<span class="kpi-label">Drawdown</span></div><div class="kpi-val ${kpi.maxDD>0?'neg':''}">${kpi.maxDD>0?'-'+fmtEURplain(kpi.maxDD):'—'}</div></div>
+    <div class="kpi-grid">
+      <div class="kpi"><div class="kpi-top">${ICONS.scale}<span class="kpi-label">Profit factor</span></div><div class="kpi-val ${kpi.profitFactor!==null && kpi.profitFactor>=1?'pos':(kpi.profitFactor!==null?'neg':'')}">${kpi.vals.length?pfDisplay:'—'}</div><div class="kpi-sub">gains / pertes</div></div>
+      <div class="kpi"><div class="kpi-top">${ICONS.trendUp}<span class="kpi-label">Win rate</span></div><div class="kpi-val ${wr>=50?'pos':'neg'}">${kpi.vals.length?wr+'%':'—'}</div><div class="kpi-sub">journées gagnantes</div></div>
+      <div class="kpi"><div class="kpi-top">${ICONS.target}<span class="kpi-label">Espérance</span></div><div class="kpi-val ${kpi.expectancy>=0?'pos':'neg'}">${kpi.vals.length?fmtEUR(kpi.expectancy):'—'}</div><div class="kpi-sub">par journée</div></div>
+      <div class="kpi"><div class="kpi-top">${ICONS.waves}<span class="kpi-label">Drawdown</span></div><div class="kpi-val ${kpi.maxDD>0?'neg':''}">${kpi.maxDD>0?'-'+fmtEURplain(kpi.maxDD):'—'}</div><div class="kpi-sub">pire creux du mois</div></div>
     </div>`;
   }
   return `
@@ -625,11 +985,22 @@ function kpiGridHTML(kpi, compact){
     </div>`;
 }
 
+async function updateFab(){
+  const fab = document.querySelector('.fab');
+  if (!fab) return;
+  const y = today.getFullYear(), m = today.getMonth(), d = today.getDate();
+  const isWknd = isWeekendDay(y, m, d);
+  const data = await loadMonth(y, m);
+  fab.style.display = (isWknd || data[d] !== undefined) ? 'none' : 'flex';
+}
+
 async function render(){
   renderDrawer();
+  updateFab();
   if (currentPage === 'dashboard') return renderDashboard();
   if (currentPage === 'journal') return viewMode === 'year' ? renderYear() : renderMonth();
   if (currentPage === 'stats') return renderStats();
+  if (currentPage === 'simulator') return renderSimulator();
   if (currentPage === 'records') return renderRecords();
   if (currentPage === 'settings') return renderSettingsPage();
 }
@@ -671,6 +1042,7 @@ function todayCardHTML(info){
       <div class="today-label">Aujourd'hui · ${dateLabel}</div>
       <div class="today-value ${cls}">${fmtEUR(val)} <span class="today-pct">(${pct>=0?'+':''}${pct.toFixed(2)}%)</span></div>
       ${sub}
+      <div class="eod">✅ Journée terminée · Repose-toi, rendez-vous demain</div>
     </div>`;
   }
   if (info.isWknd) {
@@ -695,18 +1067,43 @@ async function renderDashboard(){
   const goalInfo = computeMonthGoal(kpi, currentCapital);
   const dd = await computeAllTimeDrawdown();
   const todayInfo = await computeTodayInfo();
+  const streak = await computeDisciplineStreak();
+  const rec = await computeRecords();
+  const level = computeLevel(rec, streak);
+  const insights = await generateInsights(todayInfo);
+
+  const chipsHTML = `
+    <div class="chip-row">
+      <div class="chip streak ${streak > 0 ? 'lit' : ''}">${ICONS.flame2}<span><b>${streak}</b> jour${streak>1?'s':''} de discipline</span></div>
+      <div class="chip level" style="--lvl:${level.color}">${ICONS.trophy}<span>Trader <b>${level.name}</b></span></div>
+    </div>`;
+
+  const insightsHTML = insights.length ? `
+    <div class="insight-card">
+      <div class="insight-head">${ICONS.spark}<span>Analyse</span></div>
+      ${insights.map(i => `<div class="insight-line ${i.p === 0 ? 'warn' : ''}">${i.t}</div>`).join('')}
+    </div>` : '';
+  const stats = await getAllTimeStats();
+  const quoteHTML = `<div class="quote">« ${dailyQuote()} »</div>`;
+  const milestoneHTML = milestoneCardHTML(currentCapital, stats.avgDaily);
 
   document.getElementById('app').innerHTML = `
     ${headerHTML()}
     ${drawdownBannerHTML(dd)}
     ${backupBannerHTML()}
+    ${quoteHTML}
     ${todayCardHTML(todayInfo)}
+    ${chipsHTML}
+    ${insightsHTML}
     ${capitalCardHTML(currentCapital, allTimeTotal, roi, kpi)}
+    ${milestoneHTML}
     ${goalCardHTML(kpi, goalInfo)}
     <div class="section-label">Indicateurs clés</div>
     ${kpiGridHTML(kpi, true)}
     <div class="dash-link" onclick="setPage('journal')"><span>Voir le calendrier du mois</span>${ICONS.calendar}</div>
-    <div class="dash-link" onclick="setPage('stats')"><span>Statistiques détaillées & prévisionnel</span>${ICONS.chart}</div>
+    <div class="dash-link" onclick="setPage('records')"><span>Mes records</span>${ICONS.trophy}</div>
+    <div class="dash-link" onclick="setPage('stats')"><span>Statistiques & projections</span>${ICONS.chart}</div>
+    <div class="dash-link" onclick="setPage('simulator')"><span>Simulateur d'intérêts composés</span>${ICONS.sliders}</div>
   `;
 }
 
@@ -739,36 +1136,39 @@ function renderForecastChart(targetPts, realPts){
 async function renderForecastCard(currentCapital){
   const stats = await getAllTimeStats();
   const realDailyPct = startingCapital > 0 ? (stats.avgDaily/startingCapital)*100 : 0;
-  const days = forecastHorizonDays;
-  const targetPts = compoundCurve(currentCapital, forecastTargetPct, days, 40);
+  const scenarios = { prudent: 0.5, realiste: 1, agressif: forecastTargetPct };
+  const scenLabels = { prudent: 'Prudent', realiste: 'Réaliste', agressif: 'Agressif' };
+  const pct = scenarios[forecastScenario];
+  const days = 126;
+  const targetPts = compoundCurve(currentCapital, pct, days, 40);
   const realPts = compoundCurve(currentCapital, realDailyPct, days, 40);
-  const targetFinal = targetPts[targetPts.length-1];
-  const realFinal = realPts[realPts.length-1];
-  const months = Math.round(days/21);
+  const v30 = currentCapital * Math.pow(1 + pct/100, 21);
+  const v90 = currentCapital * Math.pow(1 + pct/100, 63);
+  const v180 = currentCapital * Math.pow(1 + pct/100, 126);
   return `
-    <div class="section-label">Prévisionnel</div>
+    <div class="section-label">Projection</div>
     <div class="forecast-card">
-      <div class="forecast-head"><span class="goal-label">Objectif : ${forecastTargetPct}%/jour composé</span></div>
       <div class="forecast-pills">
-        <button class="${forecastHorizonDays===21?'active':''}" onclick="setForecastHorizon(21)">1 mois</button>
-        <button class="${forecastHorizonDays===63?'active':''}" onclick="setForecastHorizon(63)">3 mois</button>
-        <button class="${forecastHorizonDays===126?'active':''}" onclick="setForecastHorizon(126)">6 mois</button>
+        <button class="${forecastScenario==='prudent'?'active':''}" onclick="setForecastScenario('prudent')">Prudent<small>0,5%/j</small></button>
+        <button class="${forecastScenario==='realiste'?'active':''}" onclick="setForecastScenario('realiste')">Réaliste<small>1%/j</small></button>
+        <button class="${forecastScenario==='agressif'?'active':''}" onclick="setForecastScenario('agressif')">Agressif<small>${forecastTargetPct}%/j</small></button>
       </div>
       <div class="forecast-legend">
-        <span><i style="background:#d9a94f"></i>Objectif (${forecastTargetPct}%/j)</span>
-        <span><i style="background:#8a8f98"></i>Ton rythme réel (${realDailyPct>=0?'+':''}${realDailyPct.toFixed(2)}%/j)</span>
+        <span><i style="background:#e0b05a"></i>${scenLabels[forecastScenario]} (${pct}%/j composé)</span>
+        <span><i style="background:#9aa0a8"></i>Ton rythme réel (${realDailyPct>=0?'+':''}${realDailyPct.toFixed(2)}%/j)</span>
       </div>
       ${renderForecastChart(targetPts, realPts)}
-      <div class="forecast-rows">
-        <div class="forecast-row"><span class="fl">Objectif dans ~${months} mois</span><span class="fv" style="color:var(--gold)">${fmtEURplain(targetFinal)}</span></div>
-        <div class="forecast-row"><span class="fl">À ton rythme réel dans ~${months} mois</span><span class="fv" style="color:${realFinal>=currentCapital?'var(--green)':'var(--red)'}">${fmtEURplain(realFinal)}</span></div>
+      <div class="proj-grid">
+        <div class="proj"><div class="proj-h">Dans 30 jours</div><div class="proj-v">${fmtEURplain(v30)}</div></div>
+        <div class="proj"><div class="proj-h">Dans 90 jours</div><div class="proj-v">${fmtEURplain(v90)}</div></div>
+        <div class="proj"><div class="proj-h">Dans 180 jours</div><div class="proj-v">${fmtEURplain(v180)}</div></div>
       </div>
-      <div class="forecast-warn">Scénario théorique à titre indicatif, pas une prévision fiable. ${forecastTargetPct}%/jour composé pendant ${months} mois suppose un rendement constant, sans tenir compte des séries de pertes — un rythme rarement soutenu dans la durée, en particulier avec une stratégie grid/martingale où un seul mauvais mouvement peut effacer plusieurs mois de gains.</div>
+      <div class="forecast-warn">Scénarios théoriques à rendement constant, à titre indicatif — pas des prévisions. Aucun rythme quotidien n'est garanti dans la durée, en particulier avec une stratégie grid/martingale où une seule série adverse peut effacer plusieurs mois de gains.</div>
     </div>
   `;
 }
 
-function setForecastHorizon(days){ forecastHorizonDays = days; render(); }
+function setForecastScenario(s){ forecastScenario = s; render(); }
 function editForecastTarget(){
   settingsField = 'forecastTarget';
   document.getElementById('settingsTitle').textContent = 'Objectif quotidien';
@@ -790,11 +1190,241 @@ async function renderStats(){
   const kpi = computeKPIs(monthData);
   const allTimeTotal = await getAllTimeTotal();
   const currentCapital = startingCapital + allTimeTotal;
+
+  const thisMonday = mondayOf(today);
+  const lastMonday = new Date(thisMonday); lastMonday.setDate(lastMonday.getDate()-7);
+  const wkNow = await computeWeekSummary(thisMonday);
+  const wkLast = await computeWeekSummary(lastMonday);
+  const weekRow = (label, wk) => wk.count === 0 ? `
+    <div class="week-card"><div class="wk-head"><span>${label}</span><span class="wk-empty">Aucune journée</span></div></div>` : `
+    <div class="week-card">
+      <div class="wk-head"><span>${label}</span><span class="wk-total ${wk.total>=0?'pos':'neg'}">${fmtEUR(wk.total)}</span></div>
+      <div class="wk-row"><span>Win rate</span><b>${wk.winRate}%</b></div>
+      ${wk.best ? `<div class="wk-row"><span>Meilleur jour</span><b class="pos" style="color:var(--green)">${WEEKDAY_NAMES[wk.best.w]} · ${fmtEUR(wk.best.pnl)}</b></div>` : ''}
+      ${wk.worst && wk.worst.pnl < 0 ? `<div class="wk-row"><span>Pire jour</span><b style="color:var(--red)">${WEEKDAY_NAMES[wk.worst.w]} · ${fmtEUR(wk.worst.pnl)}</b></div>` : ''}
+    </div>`;
+
   document.getElementById('app').innerHTML = `
     ${headerHTML()}
-    <div class="section-label">Indicateurs de performance — ${MONTHS_FR[viewMonth]}</div>
+    <div class="section-label">Rapport hebdomadaire</div>
+    ${weekRow('Cette semaine', wkNow)}
+    ${weekRow('Semaine dernière', wkLast)}
+    <div class="section-label" style="margin-top:16px">Indicateurs de performance — ${MONTHS_FR[viewMonth]}</div>
     ${kpiGridHTML(kpi, false)}
     ${await renderForecastCard(currentCapital)}
+  `;
+}
+
+
+function simCurve(capital0, gainPct, lossDays, lossPct, days){
+  const pattern = [];
+  for (let i = 0; i < 5; i++) pattern.push(i < 5 - lossDays ? gainPct : -lossPct);
+  const pts = [capital0];
+  let cap = capital0;
+  for (let d = 0; d < days; d++) {
+    cap *= (1 + pattern[d % 5]/100);
+    if (cap < 0) cap = 0;
+    pts.push(cap);
+  }
+  return pts;
+}
+function simSample(pts, n){
+  const out = [];
+  const step = Math.max(1, Math.floor(pts.length / n));
+  for (let i = 0; i < pts.length; i += step) out.push(pts[i]);
+  if (out[out.length-1] !== pts[pts.length-1]) out.push(pts[pts.length-1]);
+  return out;
+}
+function setSimPct(delta){ simPct = Math.max(0.1, Math.round((simPct + delta)*10)/10); render(); }
+function setSimLossPct(delta){ simLossPct = Math.max(0.1, Math.round((simLossPct + delta)*10)/10); render(); }
+function setSimLossDays(n){ simLossDays = n; render(); }
+function setSimHorizon(d){ simHorizon = d; render(); }
+
+async function renderSimulator(){
+  const allTimeTotal = await getAllTimeTotal();
+  const cap0 = startingCapital + allTimeTotal;
+  const pts = simCurve(cap0, simPct, simLossDays, simLossPct, simHorizon);
+  const finalCap = pts[pts.length-1];
+  const v30 = simCurve(cap0, simPct, simLossDays, simLossPct, 21).pop();
+  const v90 = simCurve(cap0, simPct, simLossDays, simLossPct, 63).pop();
+  const v180 = simCurve(cap0, simPct, simLossDays, simLossPct, 126).pop();
+  const sampled = simSample(pts, 40);
+  const w = 400, h = 100, pad = 6;
+  const min = Math.min(...sampled), max = Math.max(...sampled);
+  const range = (max - min) || 1;
+  const xy = sampled.map((v,i) => [pad + (i/(sampled.length-1))*(w-pad*2), h - pad - ((v-min)/range)*(h-pad*2)]);
+  const color = finalCap >= cap0 ? '#3ddc97' : '#f0655f';
+  const gid = 'sg' + Math.random().toString(36).slice(2,7);
+  const chart = `<svg viewBox="0 0 ${w} ${h}" style="width:100%;height:84px;display:block;overflow:visible">
+    <defs><linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${color}" stop-opacity="0.3"/><stop offset="100%" stop-color="${color}" stop-opacity="0"/></linearGradient></defs>
+    <path d="${smoothPath(xy)} L${xy[xy.length-1][0].toFixed(1)},${h-pad} L${xy[0][0].toFixed(1)},${h-pad} Z" fill="url(#${gid})"/>
+    <path d="${smoothPath(xy)}" fill="none" stroke="${color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" style="filter: drop-shadow(0 0 5px ${color}55)"/>
+  </svg>`;
+  const growth = cap0 > 0 ? ((finalCap - cap0) / cap0) * 100 : 0;
+
+  document.getElementById('app').innerHTML = `
+    ${headerHTML()}
+    <div class="sim-intro">Teste un scénario : « et si je faisais ${simPct}% par jour, en perdant ${simLossDays} jour${simLossDays>1?'s':''} par semaine ? » — à partir de ton capital actuel (${fmtEURplain(cap0)}).</div>
+
+    <div class="sim-card">
+      <div class="sim-row">
+        <div class="sim-label">Gain les jours gagnants</div>
+        <div class="stepper"><button onclick="setSimPct(-0.5)">−</button><span>${simPct}%/j</span><button onclick="setSimPct(0.5)">+</button></div>
+      </div>
+      <div class="sim-row">
+        <div class="sim-label">Jours perdants / semaine</div>
+        <div class="pill-group">${[0,1,2,3].map(n=>`<button class="${simLossDays===n?'active':''}" onclick="setSimLossDays(${n})">${n}</button>`).join('')}</div>
+      </div>
+      <div class="sim-row">
+        <div class="sim-label">Perte les jours perdants</div>
+        <div class="stepper"><button onclick="setSimLossPct(-0.5)">−</button><span>−${simLossPct}%/j</span><button onclick="setSimLossPct(0.5)">+</button></div>
+      </div>
+      <div class="sim-row">
+        <div class="sim-label">Horizon</div>
+        <div class="pill-group">${[[21,'1 mois'],[63,'3 mois'],[126,'6 mois'],[252,'1 an']].map(([d,l])=>`<button class="${simHorizon===d?'active':''}" onclick="setSimHorizon(${d})">${l}</button>`).join('')}</div>
+      </div>
+    </div>
+
+    <div class="sim-result">
+      <div class="sim-final ${growth>=0?'pos':'neg'}">${fmtEURplain(finalCap)}</div>
+      <div class="sim-growth">${growth>=0?'+':''}${growth.toFixed(0)}% sur la période</div>
+      ${chart}
+      <div class="proj-grid">
+        <div class="proj"><div class="proj-h">Dans 30 jours</div><div class="proj-v" style="color:${v30>=cap0?'var(--green)':'var(--red)'}">${fmtEURplain(v30)}</div></div>
+        <div class="proj"><div class="proj-h">Dans 90 jours</div><div class="proj-v" style="color:${v90>=cap0?'var(--green)':'var(--red)'}">${fmtEURplain(v90)}</div></div>
+        <div class="proj"><div class="proj-h">Dans 180 jours</div><div class="proj-v" style="color:${v180>=cap0?'var(--green)':'var(--red)'}">${fmtEURplain(v180)}</div></div>
+      </div>
+    </div>
+    <div class="forecast-warn" style="border:none;padding-top:0">Modèle théorique à rythme hebdomadaire régulier — la réalité est plus irrégulière, et une stratégie martingale concentre souvent les pertes en journées rares mais lourdes que ce modèle lisse.</div>
+  `;
+}
+
+function milestoneCardHTML(currentCapital, avgDaily){
+  const next = TIERS.find(t => t > currentCapital);
+  if (!next) return `<div class="milestone-card"><div class="ms-head">🏦 Paliers</div><div class="ms-done">Tous les paliers atteints — jusqu'à 10 000 € !</div></div>`;
+  const idx = TIERS.indexOf(next);
+  const prev = idx === 0 ? 0 : TIERS[idx-1];
+  const pct = Math.max(0, Math.min(100, ((currentCapital - prev) / (next - prev)) * 100));
+  let eta = '';
+  if (avgDaily > 0) {
+    const d = Math.ceil((next - currentCapital) / avgDaily);
+    eta = `<div class="ms-eta">⏱ ~${d} jour${d>1?'s':''} à ta moyenne actuelle (${fmtEUR(avgDaily)}/j)</div>`;
+  } else {
+    eta = `<div class="ms-eta">⏱ Moyenne actuelle négative ou nulle — estimation impossible</div>`;
+  }
+  const ladder = TIERS.map(t => `<span class="ms-tier ${currentCapital >= t ? 'done' : (t === next ? 'next' : '')}">${t >= 1000 ? (t/1000)+'k' : t}€</span>`).join('<span class="ms-sep">→</span>');
+  return `
+    <div class="milestone-card">
+      <div class="ms-head"><span>🏦 Prochain palier</span><span class="ms-target">${fmtEURplain(next)}</span></div>
+      <div class="goal-track" style="margin:10px 0 8px"><div class="goal-fill" style="width:${pct}%"></div></div>
+      <div class="ms-sub">${fmtEURplain(currentCapital)} · ${Math.round(pct)}% du chemin depuis ${prev>0?fmtEURplain(prev):'le départ'}</div>
+      ${eta}
+      <div class="ms-ladder">${ladder}</div>
+    </div>`;
+}
+
+function showToast(msg, type){
+  const el = document.createElement('div');
+  el.className = 'toast ' + (type || '');
+  el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(() => el.classList.add('show'), 30);
+  setTimeout(() => { el.classList.remove('show'); setTimeout(()=>el.remove(), 400); }, 5200);
+}
+
+function showCelebration(tier){
+  const el = document.createElement('div');
+  el.className = 'celebrate';
+  el.innerHTML = `
+    <div class="cel-inner">
+      <div class="cel-burst">${Array.from({length:14},(_,i)=>`<i style="--a:${i*(360/14)}deg;--d:${0.02*i}s"></i>`).join('')}</div>
+      <div class="cel-icon">🏦</div>
+      <div class="cel-title">Palier ${tier >= 1000 ? (tier/1000)+' 000' : tier} € atteint !</div>
+      <div class="cel-sub">Ton capital vient de franchir ${fmtEURplain(tier)}.</div>
+      <button class="today-cta" onclick="this.closest('.celebrate').remove()">Continuer</button>
+    </div>`;
+  document.body.appendChild(el);
+}
+
+async function checkAfterSave(){
+  if (!(viewYear === today.getFullYear() && viewMonth === today.getMonth() && activeDay === today.getDate())) return;
+  const allTimeTotal = await getAllTimeTotal();
+  const cap = startingCapital + allTimeTotal;
+  const unlocked = getUnlockedTiers();
+  for (const t of TIERS) {
+    if (cap >= t && !unlocked.includes(t)) {
+      unlocked.push(t);
+      saveUnlockedTiers(unlocked);
+      showCelebration(t);
+      return;
+    }
+  }
+  const ti = await computeTodayInfo();
+  if (ti.entry && ti.entry.pnl > 0 && ti.todayTarget > 0 && ti.entry.pnl >= ti.todayTarget) {
+    showToast("🎯 Objectif journalier atteint — t'arrêter maintenant préserve tes statistiques.", 'ok');
+    return;
+  }
+  const entries = (await computeRecords()).entries;
+  let tail = 0;
+  for (let i = entries.length-1; i >= 0; i--) { if (entries[i].pnl < 0) tail++; else break; }
+  if (tail >= 3) showToast(`⚠️ ${tail} pertes d'affilée — selon ton historique, ralentir après une série de pertes limite les dégâts.`, 'warn');
+}
+
+
+function careerSceneHTML(lvl){
+  const screens = [1, 1, 2, 3, 4][lvl];
+  const glow = ['#c88a5a', '#b9c2cc', '#e0b05a', '#7dd3fc', '#c084fc'][lvl];
+  const deskY = 78, w = 300, h = 110;
+  let items = '';
+  const totalW = screens * 46 + (screens-1) * 8;
+  let x = (w - totalW) / 2;
+  for (let i = 0; i < screens; i++) {
+    items += `<rect x="${x}" y="${deskY-38}" width="46" height="30" rx="3" fill="#0d1015" stroke="${glow}" stroke-width="1" opacity="0.95"/>
+      <rect x="${x+3}" y="${deskY-35}" width="40" height="24" rx="1.5" fill="${glow}" opacity="0.13"/>
+      <path d="M${x+6},${deskY-16} L${x+14},${deskY-24} L${x+22},${deskY-19} L${x+30},${deskY-28} L${x+38},${deskY-21}" stroke="${glow}" stroke-width="1.2" fill="none" opacity="0.8"/>
+      <rect x="${x+20}" y="${deskY-8}" width="6" height="8" fill="#1a1e24"/>`;
+    x += 54;
+  }
+  const plant = lvl >= 2 ? `<circle cx="24" cy="${deskY-10}" r="7" fill="#2f7d54" opacity="0.8"/><circle cx="19" cy="${deskY-15}" r="5" fill="#3a9a68" opacity="0.8"/><rect x="21" y="${deskY-6}" width="7" height="7" rx="1" fill="#7a5230"/>` : '';
+  const trophy = lvl >= 3 ? `<path d="M270 ${deskY-14} h12 l-1.5 6 a4.5 4.5 0 0 1-9 0 z" fill="${glow}" opacity="0.9"/><rect x="273.5" y="${deskY-7}" width="5" height="4" fill="${glow}" opacity="0.7"/><rect x="271" y="${deskY-3}" width="10" height="2.5" rx="1" fill="${glow}" opacity="0.7"/>` : '';
+  const skyline = lvl >= 4 ? `<g opacity="0.22">${[30,60,95,135,175,215,250].map((sx,i)=>`<rect x="${sx}" y="${12+((i*7)%16)}" width="${13+(i%3)*4}" height="${30-((i*5)%12)}" fill="${glow}"/>`).join('')}</g>` : '';
+  return `<div class="career-scene"><svg viewBox="0 0 ${w} ${h}" style="width:100%;display:block">
+    ${skyline}
+    <line x1="12" y1="${deskY}" x2="${w-12}" y2="${deskY}" stroke="rgba(255,255,255,0.25)" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="40" y1="${deskY}" x2="34" y2="${h-6}" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
+    <line x1="${w-40}" y1="${deskY}" x2="${w-34}" y2="${h-6}" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
+    ${items}${plant}${trophy}
+  </svg><div class="career-cap">Ton setup évolue avec ton niveau — ${screens} écran${screens>1?'s':''}${lvl>=2?', plante':''}${lvl>=3?', trophée':''}${lvl>=4?', vue sur la ville':''}</div></div>`;
+}
+
+async function renderRecords(){
+  const rec = await computeRecords();
+  const streak = await computeDisciplineStreak();
+  const level = computeLevel(rec, streak);
+  const fmtDate = e => e ? `${e.d} ${MONTHS_SHORT_FR[e.m].toLowerCase()} ${e.y}` : '';
+  const levelLadder = LEVELS.map((l,i) => `
+    <div class="lvl-step ${i === level.index ? 'now' : (i < level.index ? 'done' : '')}" style="--lvl:${l.color}">
+      <span class="lvl-dot"></span><span>${l.name}</span>
+    </div>`).join('<div class="lvl-arrow">→</div>');
+
+  document.getElementById('app').innerHTML = `
+    ${headerHTML()}
+    <div class="level-card">
+      ${careerSceneHTML(level.index)}
+      <div class="level-badge" style="--lvl:${level.color}">${ICONS.trophy}</div>
+      <div class="level-name" style="color:${level.color}">Trader ${level.name}</div>
+      <div class="level-hint">${level.nextHint}</div>
+      <div class="lvl-ladder">${levelLadder}</div>
+    </div>
+    <div class="section-label">Records personnels</div>
+    <div class="record-grid">
+      <div class="record"><div class="rec-icon">🏆</div><div class="rec-label">Meilleure journée</div><div class="rec-val pos">${rec.bestDay && rec.bestDay.pnl > 0 ? fmtEUR(rec.bestDay.pnl) : '—'}</div><div class="rec-sub">${rec.bestDay && rec.bestDay.pnl > 0 ? fmtDate(rec.bestDay) : ''}</div></div>
+      <div class="record"><div class="rec-icon">🔥</div><div class="rec-label">Plus longue série</div><div class="rec-val pos">${rec.longestWin > 0 ? rec.longestWin + ' j gagnants' : '—'}</div><div class="rec-sub"></div></div>
+      <div class="record"><div class="rec-icon">📈</div><div class="rec-label">Meilleur mois</div><div class="rec-val pos">${rec.bestMonth && rec.bestMonth.total > 0 ? fmtEUR(rec.bestMonth.total) : '—'}</div><div class="rec-sub">${rec.bestMonth && rec.bestMonth.total > 0 ? MONTHS_FR[rec.bestMonth.m] + ' ' + rec.bestMonth.y : ''}</div></div>
+      <div class="record"><div class="rec-icon">📉</div><div class="rec-label">Plus gros drawdown</div><div class="rec-val neg">${rec.maxDDeur > 0 ? '-' + fmtEURplain(rec.maxDDeur) : '—'}</div><div class="rec-sub">depuis un pic</div></div>
+      <div class="record"><div class="rec-icon">📅</div><div class="rec-label">Jours tradés</div><div class="rec-val">${rec.daysTraded}</div><div class="rec-sub">au total</div></div>
+      <div class="record"><div class="rec-icon">🎯</div><div class="rec-label">Win rate global</div><div class="rec-val ${rec.winRate>=50?'pos':'neg'}">${rec.daysTraded ? rec.winRate + '%' : '—'}</div><div class="rec-sub">toutes journées</div></div>
+    </div>
   `;
 }
 
@@ -1005,6 +1635,21 @@ document.getElementById('settingsSave').onclick = async ()=>{
   render();
 };
 
+let selectedMood = null;
+const MOOD_LABELS = { confiant: '😊 Confiant', normal: '😐 Normal', stresse: '😡 Stressé', fatigue: '😴 Fatigué' };
+document.querySelectorAll('#moodRow button').forEach(btn => {
+  btn.onclick = () => {
+    const m = btn.getAttribute('data-mood');
+    selectedMood = (selectedMood === m) ? null : m;
+    updateMoodRow();
+  };
+});
+function updateMoodRow(){
+  document.querySelectorAll('#moodRow button').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-mood') === selectedMood);
+  });
+}
+
 let activeDay = null;
 async function quickAddToday(){
   const y = today.getFullYear(), m = today.getMonth(), d = today.getDate();
@@ -1025,6 +1670,8 @@ function openDay(d){
   document.getElementById('modalDay').textContent = `${d} ${MONTHS_FR[viewMonth]}`;
   document.getElementById('amountInput').value = existing ? fmtEURplain(Math.abs(existing.pnl)).replace(' €','') : '';
   document.getElementById('noteInput').value = existing ? (existing.note || '') : '';
+  selectedMood = existing ? (existing.mood || null) : null;
+  updateMoodRow();
   document.getElementById('btnDelete').style.display = existing !== undefined ? 'block' : 'none';
   updateToggle();
   document.getElementById('overlay').classList.add('show');
@@ -1042,10 +1689,11 @@ document.getElementById('btnSave').onclick = async ()=>{
   const n = parseFloat(raw);
   if (isNaN(n) || n < 0) return;
   const note = document.getElementById('noteInput').value.trim();
-  monthData[activeDay] = { pnl: Math.round((sign === 'perte' ? -n : n) * 100) / 100, note };
+  monthData[activeDay] = { pnl: Math.round((sign === 'perte' ? -n : n) * 100) / 100, note, mood: selectedMood };
   await saveMonth();
   document.getElementById('overlay').classList.remove('show');
   render();
+  checkAfterSave();
 };
 document.getElementById('btnDelete').onclick = async ()=>{
   delete monthData[activeDay];
@@ -1145,6 +1793,7 @@ async function disablePin(){
   const hadSettings = await loadSettings();
   if (!hadSettings) { startingCapital = 300; forecastTargetPct = 2; firstUseAt = Date.now(); await saveSettings(); }
   else if (!firstUseAt) { firstUseAt = Date.now(); await saveSettings(); }
+  hideCapital = lsGet('hideCapital') === '1';
   monthData = await loadMonth(viewYear, viewMonth);
   if (isCurrentMonthJuly2026() && Object.keys(monthData).length === 0) {
     monthData = { "2": {pnl: 4.92, note: ''}, "3": {pnl: -7.61, note: ''} };
